@@ -2,6 +2,7 @@
   "name": "iayos-finnish-flashcards",
   "dependencies": {},
   "globalDependencies": {
+    "app": "file:./typings_app/app.d.ts",
     "jquery": "registry:dt/jquery#1.10.0+20170310222111",
     "jquerymobile": "registry:dt/jquerymobile#1.4.0+20160510010627"
   }
