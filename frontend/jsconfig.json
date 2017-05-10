@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ES6"
+    },
+    "exclude": [
+        "app/dist",
+        "node_modules"
+    ],
+    "include": [
+        "app/js/**/*"
+    ]
+}
