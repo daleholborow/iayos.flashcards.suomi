@@ -1,2 +1,2 @@
-/// <reference path="jquery/jquery.d.ts" />
-/// <reference path="jquerymobile/jquerymobile.d.ts" />
+/// <reference path="globals/jquery/index.d.ts" />
+/// <reference path="globals/jquerymobile/index.d.ts" />

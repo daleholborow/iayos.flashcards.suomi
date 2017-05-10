@@ -42,16 +42,16 @@ gulp.task('styles', function() {
 
 // typescript
 
-var tsProject = tsc.createProject({
+/*var tsProject = tsc.createProject({
     declaration: false,
     outDir: paths.tscripts.dest,
     excludes : [
         paths.tscripts.dest,
         "node_modules"
     ]
-});
+});*/
 
-// var tsProject = tsc.createProject('tsconfig.json');
+var tsProject = tsc.createProject('tsconfig.json');
 
 gulp.task('build', ['compile:typescript']);
 gulp.task('compile:typescript', function() {

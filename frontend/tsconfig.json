@@ -23,4 +23,24 @@
 //     "node_modules"
 //   ]
 // }
-{}
+
+// Notes: compilerOptions.allowJs MUST be set to true too allow .d.ts file intellisense
+
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "allowJs": true,
+        "declaration": false,
+        "removeComments": true,
+        "outDir": "app/dist",
+        "sourceMap": true,
+        "target": "ES6"
+    },
+    "exclude": [
+        "app/dist",
+        "node_modules"
+    ],
+    "files": [
+        "typings/index.d.ts"
+    ]
+}
