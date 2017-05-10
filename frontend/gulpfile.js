@@ -1,5 +1,6 @@
 var gulp        = require('gulp');
-var tsc         = require('gulp-tsc');
+var tsc         = require('gulp-typescript');
+var merge       = require('merge2');
 var tslint      = require('gulp-tslint');
 var browserSync = require('browser-sync').create();
 var reload      = browserSync.reload;
@@ -28,8 +29,7 @@ gulp.task('browser-sync', function() {
     browserSync.init({
         server: {
             baseDir: paths.browsersync.basedir
-        }//,
-		//browser: 'google chrome canary'
+        }
     });
 });
 
@@ -39,22 +39,48 @@ gulp.task('styles', function() {
         .pipe(reload({stream:true}));
 });
 
+
 // typescript
+
+var tsProject = tsc.createProject({
+    declaration: false,
+    outDir: paths.tscripts.dest,
+    excludes : [
+        paths.tscripts.dest,
+        "node_modules"
+    ]
+});
+
+// var tsProject = tsc.createProject('tsconfig.json');
+
 gulp.task('build', ['compile:typescript']);
 gulp.task('compile:typescript', function() {
-    return gulp.src(paths.tscripts.src)
-		.pipe(tsc({
-			module: "commonjs",
-			emitError: true,
-			sourceMap: false,
-			outDir: paths.tscripts.dest,
-            exclude: [
-                "dist",
-                "node_modules"
-            ]
-		}))
-		.pipe(gulp.dest(paths.tscripts.dest))
+    var tsResult = gulp.src(paths.tscripts.src)
+        .pipe(tsProject());
+
+    return tsResult
+        .pipe(gulp.dest(paths.tscripts.dest))
         .pipe(reload({stream:true}));
+    // return merge([ // Merge the two output streams, so this task is finished when the IO of both operations is done. 
+    //     // tsResult.dts.pipe(gulp.dest('release/definitions')),
+    //     // tsResult.js.pipe(gulp.dest('release/js'))
+    //     //tsResult.dts.pipe(gulp.dest(paths.tscripts.dest + '/definitions')),
+    //     tsResult.js.pipe(gulp.dest(paths.tscripts.dest))
+    // ]);
+
+    // return gulp.src(paths.tscripts.src)
+	// 	.pipe(tsc({
+	// 		module: "ES6",
+	// 		emitError: true,
+	// 		sourceMap: false,
+	// 		outDir: paths.tscripts.dest,
+    //         exclude: [
+    //             "dist",
+    //             "node_modules"
+    //         ]
+	// 	}))
+	// 	.pipe(gulp.dest(paths.tscripts.dest))
+    //     .pipe(reload({stream:true}));
 });
 
 // linting
@@ -62,11 +88,12 @@ gulp.task('lint', ['lint:default']);
 gulp.task('lint:default', function(){
       return gulp.src(paths.tscripts.src)
         .pipe(tslint())
-        .pipe(tslint.report('prose', {
-          emitError: false
+        .pipe(tslint.report('prose' , {
+          emitError: true
         }));
 });
 
+/*
 // run task - not used at this point
 gulp.task('run', function() {
 	// do nothing for now
@@ -76,6 +103,7 @@ gulp.task('run', function() {
 gulp.task('buildrun', ['build', 'run'], function() {
 	// do nothing for now
 });
+*/
 
 // static server + watching css/html files
 gulp.task('test', ['serve']);
