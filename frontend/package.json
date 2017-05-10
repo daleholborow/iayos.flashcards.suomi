@@ -26,7 +26,6 @@
   "devDependencies": {
     "browser-sync": "^2.7.13",
     "gulp": "^3.9.0",
-    //"gulp-tsc": "^1.0.0",
     "gulp-tslint": "^2.0.0",
     "gulp-typescript": "^3.1.6",
     "merge2": "^1.0.3",
