@@ -1,0 +1,33 @@
+{
+  "name": "iayos-finnish-flashcards",
+  "version": "0.0.1",
+  "description": "Simple Finnish flashcard application by inayearorso in cooperation with eladaus",
+  "main": "./dist/main.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daleholborow/iayos.flashcards.suomi.git"
+  },
+  "keywords": [
+    "finnish",
+    "flashcards",
+    "inayearorso",
+    "suomi",
+    "eladaus"
+  ],
+  "author": "Dale Holborow @ inayearorso",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/daleholborow/iayos.flashcards.suomi/issues"
+  },
+  "homepage": "https://github.com/daleholborow/iayos.flashcards.suomi#readme",
+  "devDependencies": {
+    "browser-sync": "^2.7.13",
+    "gulp": "^3.9.0",
+    "gulp-tsc": "^1.0.0",
+    "gulp-tslint": "^2.0.0",
+    "typescript": "^2.3.2"
+  }
+}
