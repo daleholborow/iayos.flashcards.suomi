@@ -16,53 +16,136 @@
 <body>
 
 	<div data-role="page" id="page-home">
-		<div data-role="header">
-			<h1>Simple Suomi Flashcards</h1>
-			blah blah blah, show most populor 
-			OR logged in user's latest / favs
-			- show resume
-			<p>View internal page called <a href="#page-deck">go to deck</a></p>
+<!--
+		<div data-role="panel" data-position-fixed="true" data-display="push" data-theme="a" id="nav-panel">
+
+			<ul data-role="listview">
+
+				<li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
+
+				<li><a href="#panel-fixed-page2">Deck 1</a></li>
+
+				<li><a href="#panel-fixed-page2">Deck 2</a></li>
+
+				<li><a href="#panel-fixed-page2">Deck 3</a></li>
+
+				<li><a href="#panel-fixed-page2">Text inputs & textarea</a></li>
+
+				<li><a href="#panel-fixed-page2">Transitions</a></li>
+			</ul>
 		</div>
-		<div role="main" class="ui-content">...</div>
-		<div data-role="footer">...</div>
+		-->
+		<!-- /panel -->
+<!--
+		<div data-role="panel" data-position="right" data-position-fixed="true" data-display="overlay" data-theme="a" id="add-form">
+
+			<form class="userform">
+
+				<h2>Login</h2>
+				<label for="name">Username:</label>
+				<input type="text" name="name" id="name" value="" data-clear-btn="true" data-mini="true">
+				<label for="password">Password:</label>
+				<input type="password" name="password" id="password" value="" data-clear-btn="true" autocomplete="off" data-mini="true">
+				<div class="ui-grid-a">
+
+					<div class="ui-block-a"><a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-b ui-mini">Cancel</a></div>
+
+					<div class="ui-block-b"><a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-mini">Save</a></div>
+				</div>
+			</form>
+		</div>
+		-->
+
+		<div data-role="header">
+			<div data-role="header" data-position="fixed">
+				<h3>Simple Suomi</h3>
+				<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+				<a href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>
+			</div>
+		</div>
+
+		<div role="main" class="ui-content jqm-content jqm-fullwidth" <h3 class="ui-bar ui-bar-a ui-corner-all">Simple Suomi Flashcards</h3>
+			[blah blah blah, ]show most populor OR logged in user's latest / favs - show resume]
+
+			<h4 class="ui-bar ui-bar-a">Most Popular</h4>
+
+			<ul data-role="listview"data-inset="true">
+
+				<li><a href="#page-deck">Top 100 Finnish Words</a></li>
+
+				<li><a href="#page-deck">Top 50 Holiday Phrases</a></li>
+
+				<li><a href="#page-deck">Top 50 Verbs</a></li>
+
+				<li><a href="#page-deck">Opposites Attract</a></li>
+
+				<li><a href="#page-deck">Transitions</a></li>
+			</ul>
+
+			<p>Or </p>
+			<a href="#page-deck">search all decks </a>
+
+			<div data-demo-html="#panel-fixed-page1"></div>
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<h4>homepage footer</h4>
+		</div>
 	</div>
 
-	<div data-role="page" id="page-login">
+
+
+	<!--<div data-role="page" id="page-login">
 		<div data-role="header">
 			<h1>Create Account or Login</h1>
 			blah blah blah
 		</div>
 		<div role="main" class="ui-content">...</div>
-		<div data-role="footer">...</div>
-	</div>
+		<div data-role="footer" data-position="fixed">footer</div>
+	</div>-->
 
 	<div data-role="page" id="page-about">
-		<div data-role="header">
-			<h1>About Simple Suomi</h1>
-			- donate
-			- who we are
-			- privacy
+		<div data-role="header" data-position="fixed">
+			<h3>About Simple Suomi</h3>
+			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+			<a href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>
 		</div>
-		<div role="main" class="ui-content">...</div>
-		<div data-role="footer">...</div>
+		<div role="main" class="ui-content">
+			<h2>About Simple Suomi</h2>
+			- donate - who we are - privacy
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<h4>privacy footer</h4>
+		</div>
 	</div>
 
 	<div data-role="page" id="page-contact">
-		<div data-role="header">
+		<div data-role="header" data-position="fixed">
 			<h1>Contact Simple Suomi</h1>
 			- contact form to submit feedback
 		</div>
 		<div role="main" class="ui-content">...</div>
-		<div data-role="footer">...</div>
+		div data-role="footer" data-position="fixed">
+		<h4>contact footer</h4>
+	</div>
 	</div>
 
 	<div data-role="page" id="page-deck">
-		<div data-role="header">
-			<h1>Contact Simple Suomi</h1>
-			- contact form to submit feedback
+		<div data-role="header" data-position="fixed">
+
+		</div>
+
+		<div data-role="header" data-position="fixed">
+			<h3>Deck: [deck name]]</h3>
+			<a href="#page-home" data-icon="home" data-iconpos="notext">Home</a>
+			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+			
+			<!--
+			<a href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>-->
 		</div>
 		<div role="main" class="ui-content">...</div>
-		<div data-role="footer">...</div>
+		<div data-role="footer" data-position="fixed">
+			<h4>deck footer</h4>
+		</div>
 	</div>
 
 </body>
