@@ -1,16 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8" />
-	<title>Untitled</title>
-	<link rel="stylesheet" href="styles/jquery.mobile-1.4.5.min.css" />
+	<title>Simple Suomi Flashcards</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="styles/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" />
 	<!--<link rel="stylesheet" href="styles/style.css" />-->
-</head>
-<body>
-	<h1>Test Titel 5</h1>
 
-	<!-- scripts -->
+	<script src="js/jquery-1.11.1/jquery-1.11.1.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script src="dist/script.js"></script>
+</head>
+
+<body>
+
+	<div data-role="page" id="page-home">
+		<div data-role="header">
+			<h1>Simple Suomi Flashcards</h1>
+			blah blah blah, show most populor 
+			OR logged in user's latest / favs
+			- show resume
+			<p>View internal page called <a href="#page-deck">go to deck</a></p>
+		</div>
+		<div role="main" class="ui-content">...</div>
+		<div data-role="footer">...</div>
+	</div>
+
+	<div data-role="page" id="page-login">
+		<div data-role="header">
+			<h1>Create Account or Login</h1>
+			blah blah blah
+		</div>
+		<div role="main" class="ui-content">...</div>
+		<div data-role="footer">...</div>
+	</div>
+
+	<div data-role="page" id="page-about">
+		<div data-role="header">
+			<h1>About Simple Suomi</h1>
+			- donate
+			- who we are
+			- privacy
+		</div>
+		<div role="main" class="ui-content">...</div>
+		<div data-role="footer">...</div>
+	</div>
+
+	<div data-role="page" id="page-contact">
+		<div data-role="header">
+			<h1>Contact Simple Suomi</h1>
+			- contact form to submit feedback
+		</div>
+		<div role="main" class="ui-content">...</div>
+		<div data-role="footer">...</div>
+	</div>
+
+	<div data-role="page" id="page-deck">
+		<div data-role="header">
+			<h1>Contact Simple Suomi</h1>
+			- contact form to submit feedback
+		</div>
+		<div role="main" class="ui-content">...</div>
+		<div data-role="footer">...</div>
+	</div>
 
 </body>
+
 </html>
