@@ -1,0 +1,8 @@
+
+.iayos-center{
+  text-align: center;
+}
+
+.iayos-center * {
+  margin: 0 auto;
+}

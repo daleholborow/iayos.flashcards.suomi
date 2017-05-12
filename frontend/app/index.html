@@ -6,7 +6,7 @@
 	<title>Simple Suomi Flashcards</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="styles/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" />
-	<!--<link rel="stylesheet" href="styles/style.css" />-->
+	<link rel="stylesheet" href="styles/iayos.suomi.css" />
 
 	<script src="js/jquery-1.11.1/jquery-1.11.1.min.js"></script>
 	<script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -16,7 +16,7 @@
 <body>
 
 	<div data-role="page" id="page-home">
-<!--
+		<!--
 		<div data-role="panel" data-position-fixed="true" data-display="push" data-theme="a" id="nav-panel">
 
 			<ul data-role="listview">
@@ -36,7 +36,7 @@
 		</div>
 		-->
 		<!-- /panel -->
-<!--
+		<!--
 		<div data-role="panel" data-position="right" data-position-fixed="true" data-display="overlay" data-theme="a" id="add-form">
 
 			<form class="userform">
@@ -69,7 +69,7 @@
 
 			<h4 class="ui-bar ui-bar-a">Most Popular</h4>
 
-			<ul data-role="listview"data-inset="true">
+			<ul data-role="listview" data-inset="true">
 
 				<li><a href="#page-deck">Top 100 Finnish Words</a></li>
 
@@ -79,11 +79,10 @@
 
 				<li><a href="#page-deck">Opposites Attract</a></li>
 
-				<li><a href="#page-deck">Transitions</a></li>
 			</ul>
 
 			<p>Or </p>
-			<a href="#page-deck">search all decks </a>
+			<a href="#page-search-decks">search all decks </a>
 
 			<div data-demo-html="#panel-fixed-page1"></div>
 		</div>
@@ -93,6 +92,68 @@
 	</div>
 
 
+	<div data-role="page" id="page-search-decks">
+		<div data-role="header" data-position="fixed"></div>
+		<div data-role="main" class="ui-content">
+			<form>
+				<input data-type="search" id="searchForCollapsibleSetChildren">
+			</form>
+
+			<div data-role="collapsibleset" data-filter="true" data-children="> div, > div div ul li" data-inset="true" id="collapsiblesetForFilterChildren"
+			 data-input="#searchForCollapsibleSetChildren">
+
+				<div data-role="collapsible" data-filtertext="Animals Cats Dogs Lizards snakes">
+
+					<h3>Animals</h3>
+
+					<ul data-role="listview" data-inset="false">
+
+						<li data-filtertext="Animals Cats">Cats</li>
+
+						<li data-filtertext="Animals Dogs">Dogs</li>
+
+						<li data-filtertext="Animals Lizards">Lizards</li>
+
+						<li data-filtertext="Animals Snakes">Snakes</li>
+					</ul>
+				</div>
+
+				<div data-role="collapsible" data-filtertext="Cars Acura Audi BMW Cadillac">
+
+					<h3>Cars</h3>
+
+					<ul data-role="listview" data-inset="false">
+
+						<li data-filtertext="Cars Acura">Acura</li>
+
+						<li data-filtertext="Cars Audi">Audi</li>
+
+						<li data-filtertext="Cars BMW">BMW</li>
+
+						<li data-filtertext="Cars Cadillac">Cadillac</li>
+					</ul>
+				</div>
+
+				<div data-role="collapsible" data-filtertext="Planets Earth Jupiter Mars Mercury">
+
+					<h3>Planets</h3>
+
+					<ul data-role="listview" data-inset="false">
+
+						<li data-filtertext="Planets Acura">Earth</li>
+
+						<li data-filtertext="Planets Jupiter">Jupiter</li>
+
+						<li data-filtertext="Planets Mars">Mars</li>
+
+						<li data-filtertext="Planets Mercury">Mercury</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		<div data-role="footer" data-position="fixed"></div>
+	</div>
 
 	<!--<div data-role="page" id="page-login">
 		<div data-role="header">
@@ -138,11 +199,23 @@
 			<h3>Deck: [deck name]]</h3>
 			<a href="#page-home" data-icon="home" data-iconpos="notext">Home</a>
 			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
-			
+
 			<!--
 			<a href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>-->
 		</div>
-		<div role="main" class="ui-content">...</div>
+		<div role="main" class="ui-content">
+
+			<div class="ui-body ui-body-a ui-corner-all">
+				<div class="ui-body ui-body-a ui-corner-all">
+					<p class="iayos-center">
+						[Lorem ipsum dolor sit amet, consectetur adipiscing elit.]
+					</p>
+				</div>
+				<input type="button" value="FLIP">
+				<input type="button" value="READ TO ME">
+			</div>
+
+		</div>
 		<div data-role="footer" data-position="fixed">
 			<h4>deck footer</h4>
 		</div>
