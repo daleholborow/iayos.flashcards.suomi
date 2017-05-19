@@ -8,9 +8,7 @@
 	<link rel="stylesheet" href="styles/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="styles/iayos.suomi.css" />
 
-	<script src="js/jquery-1.11.1/jquery-1.11.1.min.js"></script>
-	<script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
-	<script src="dist/script.js"></script>
+
 </head>
 
 <body>
@@ -192,35 +190,46 @@
 
 	<div data-role="page" id="page-deck">
 		<div data-role="header" data-position="fixed">
-
-		</div>
-
-		<div data-role="header" data-position="fixed">
 			<h3>Deck: [deck name]]</h3>
 			<a href="#page-home" data-icon="home" data-iconpos="notext">Home</a>
 			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
-
-			<!--
-			<a href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>-->
 		</div>
 		<div role="main" class="ui-content">
-
-			<div class="ui-body ui-body-a ui-corner-all">
-				<div class="ui-body ui-body-a ui-corner-all">
-					<p class="iayos-center">
-						[Lorem ipsum dolor sit amet, consectetur adipiscing elit.]
-					</p>
+			<div class="ui-body ui-body-a ui-corner-all ">
+				<div id="flashcard" class="flip">
+					<div class="front">
+						<p class="iayos-center">
+							[Hyva]
+						</p>
+					</div>
+					<div class="back">
+						<p class="iayos-center">
+							[Good]
+						</p>
+					</div>
 				</div>
-				<input type="button" value="FLIP">
-				<input type="button" value="READ TO ME">
 			</div>
-
+			<input id="toggle-flashcard" type="button" value="FLIP">
+			<input type="button" value="READ TO ME">
 		</div>
 		<div data-role="footer" data-position="fixed">
 			<h4>deck footer</h4>
 		</div>
 	</div>
 
+	<script src="js/jquery-2.1.4/jquery-2.1.4.min.js"></script>
+	<script src="js/jquery.flip/jquery.flip.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="dist/script.js"></script>
+	<script>
+		$("#flashcard").flip({
+			trigger: 'manual'
+		});
+		$("#toggle-flashcard").click(function () {
+
+			$("#flashcard").flip('toggle');
+		});
+	</script>
 </body>
 
 </html>

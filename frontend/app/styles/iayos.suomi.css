@@ -6,3 +6,31 @@
 .iayos-center * {
   margin: 0 auto;
 }
+
+
+
+
+/*
+
+.flip {
+    height: 199px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.flip img {
+    width: 300px;
+    height: auto;
+}
+
+.flip .card-front {
+    background: #2184cd;
+    color: red;
+    text-align: center;
+}
+
+.flip .card-back {
+    background: #2184cd;
+    color: #fff;
+    text-align: center;
+}*/
