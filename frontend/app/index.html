@@ -30,7 +30,7 @@
 			</ul>
 			<!--<p>Or </p>
 			<a href="#page-search-decks">search all decks </a>-->
-			<div data-demo-html="#panel-fixed-page1"></div>
+			<!--<div data-demo-html="#panel-fixed-page1"></div>-->
 		</div>
 		<div data-role="footer" data-position="fixed">
 			<h4>homepage footer</h4>
@@ -46,7 +46,7 @@
 		div data-role="footer" data-position="fixed">
 		<h4>contact footer</h4>
 	</div>
-	</div>
+
 
 	<div data-role="page" id="page-deck">
 		<div data-role="header" data-position="fixed">
@@ -56,15 +56,14 @@
 		</div>
 		<div role="main" class="ui-content">
 			<div class="ui-body ui-body-a ui-corner-all ">
-
 				<div id="flashcard" class="flip">
 					<div class="front">
 						<p class="iayos-center">
 							<span id="frontText"></span>
 						</p>
 						<hr/>
+						<br/>
 					</div>
-
 					<div class="back">
 						<p class="iayos-center">
 							<span id="backText"></span>
@@ -94,162 +93,6 @@
 	<script src="js/jquery.flip/jquery.flip.min.js"></script>
 	<script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script src="dist/script.js"></script>
-	<script>
-		$("#flashcard").flip({
-			trigger: 'manual'
-		});
-		$("#toggle-flashcard").click(function () {
-			//console.log("clicking answer 1 will give ansewrid: " + $("#answer1").data("answerId"));
-			$("#flashcard").flip('toggle');
-		});
-
-		$(function () {
-			$(document).on('click', '.select-deck', function () {
-				//Change page
-				// console.log("deck selcetiojn called by " + this.id);
-
-				let selectedDeckCode = $(this).data("deck-code");
-				selectDeck(selectedDeckCode);
-				$.mobile.changePage("#page-deck");
-			});
-			$(document).on('click', '.answer-button', function () {
-				//Change page
-				// console.log("answer called by element " + this.id);
-				// console.log("clicked answer 1 and should se ansewrid: " + $("#answer1").data("answerId"));
-				// console.log("chose answer: " + $(this).data("answerId"));
-				let chosenAnswerId = $(this).data("answer-card-id");
-				if (storeObject.activeCard.id === chosenAnswerId) {
-					// correct
-					console.log("Answered correctly");
-				}
-				else {
-					// incorrect
-					console.log("Answered incorrectly");
-				}
-				storeObject.activeCardIndex = storeObject.activeCardIndex + 1;
-				//$.mobile.changePage("#page-deck");
-				$.mobile.pageContainer.pagecontainer("change", "#page-deck", { transition: "flow", changeHash: false, reload: false, allowSamePageTransition: true })
-
-				console.log("answered a question");
-			});
-		});
-
-		let storeObject = {
-				activeDeckCode: "",
-				activeDeck: {},
-				activeCard: {},
-				activeCardIndex: 0
-			};
-		
-
-		function refreshStore() {
-			return {
-				activeDeckCode: "",
-				activeDeck: {},
-				activeCard: {},
-				activeCardIndex: 0
-			};
-		}
-		function selectDeck(deckCode) {
-			console.log("selected a deck: " + deckCode);
-			storeObject.activeDeckCode = deckCode;
-		}
-
-		function resetAndGoToHome() {
-			storeObject = refreshStore();
-			$.mobile.changePage("#page-home");
-		}
-
-		$(document).on('pagebeforeshow', '#page-home', function () {
-
-			storeObject = refreshStore();
-		});
-
-		$(document).on('pagebeforeshow', '#page-deck', function () {
-
-			if (!storeObject.activeDeckCode) resetAndGoToHome();
-
-			$.getJSON("/data/" + storeObject.activeDeckCode + ".json", function (json) {
-				console.log(json); // this will show the info it in firebug console
-				storeObject.activeDeck = json;
-
-				// by default select the first question
-				initializeQuestion(storeObject.activeCardIndex);
-			});
-
-			// $('#movie-data').empty();
-			// $.each(movieInfo.result, function(i, row) {
-			//     if(row.id == movieInfo.id) {
-			//         var movieHandler = Handlebars.compile($("#movie-template").html());
-			//         $('#movie-data').html(movieHandler(row));                
-			//     } 
-			// });          
-			// $('#movie-data').listview('refresh');
-
-		});
-
-		function getRandomCard(cards, whereNotIndex) {
-			let randomIndex = whereNotIndex;
-			while (randomIndex == whereNotIndex) {
-				randomIndex = Math.floor(Math.random() * cards.length);
-			}
-			return cards[randomIndex];
-		}
-
-		function initializeQuestion(cardIndex) {
-
-			storeObject.activeCardIndex = cardIndex;
-			
-			
-
-			storeObject.activeCard = storeObject.activeDeck.cards[cardIndex];
-
-			var activeCard = storeObject.activeDeck.cards[cardIndex];
-			let wrongCard1 = getRandomCard(storeObject.activeDeck.cards, cardIndex);
-			let wrongCard2 = getRandomCard(storeObject.activeDeck.cards, cardIndex);
-
-			// var wrongCard1 = storeObject.activeDeck.cards[cardIndex + 1];
-			// var wrongCard2 = storeObject.activeDeck.cards[cardIndex + 2];
-			//storeObject.correctAnswerId = 1;
-			// load up the deck, 
-			// load up the question
-			// load up 1 correct and 2 random answers
-
-			console.log(activeCard, wrongCard1, wrongCard2);
-
-			$("#frontText").text(activeCard.f);
-			$("#backText").text(activeCard.f);
-			$("#answer1").html(activeCard.b);
-			//$("#answer1").html(activeCard.b);
-			$("#answer1").data("answer-card-id", activeCard.id);
-			// //$("#answer2").val("BAD");
-			$("#answer2").html(wrongCard1.b);
-			$("#answer2").data("answer-card-id", wrongCard1.id);
-			// //$("#answer3").val("UGLY");
-			$("#answer3").html(wrongCard2.b);
-			$("#answer3").data("answer-card-id", wrongCard2.id);
-			// $("#answer3").data("answerId", 3);
-
-			//console.log("clicking answer 1 will give ansewrid: " + $("#answer1").data("answerId"));
-			// console.log($("#frontText").text("HYVA")); // = "test";
-		}
-
-// $(".back").hide();
-// $(".front").show();
-		// var screen = $.mobile.getScreenHeight();
-
-// var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight();
-
-// var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
-
-// /* content div has padding of 1em = 16px (32px top+bottom). This step
-//    can be skipped by subtracting 32px from content var directly. */
-// var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height();
-
-// var content = screen - header - footer - contentCurrent;
-// console.log (content)
-// $(".ui-content").height(content);
-	</script>
 </body>
 
 </html>
