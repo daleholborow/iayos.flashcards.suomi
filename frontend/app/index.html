@@ -56,6 +56,7 @@
 		</div>
 		<div role="main" class="ui-content">
 			<div class="ui-body ui-body-a ui-corner-all ">
+
 				<div id="flashcard" class="flip">
 					<div class="front">
 						<p class="iayos-center">
@@ -63,19 +64,20 @@
 						</p>
 						<hr/>
 					</div>
+
 					<div class="back">
 						<p class="iayos-center">
 							<span id="backText"></span>
 						</p>
 						<hr/>
 						<p class="iayos-center">
-							<input type="button" id="answer1" class="answer-button" value="">
+							<button id="answer1" class="answer-button" value=""></button>
 						</p>
 						<p class="iayos-center">
-							<input type="button" id="answer2" class="answer-button" value="">
+							<button id="answer2" class="answer-button" value=""></button>
 						</p>
 						<p class="iayos-center">
-							<input type="button" id="answer3" class="answer-button" value="">
+							<button id="answer3" class="answer-button" value=""></button>
 						</p>
 					</div>
 				</div>
@@ -112,13 +114,11 @@
 			});
 			$(document).on('click', '.answer-button', function () {
 				//Change page
-				console.log("answer called by element " + this.id);
-
-				console.log("clicked answer 1 and should se ansewrid: " + $("#answer1").data("answerId"));
-
-				console.log("chose answer: " + $(this).data("answerId"));
-				let chosenAnswerId = $(this).data("answerId");
-				if (storeObject.correctAnswerId === chosenAnswerId) {
+				// console.log("answer called by element " + this.id);
+				// console.log("clicked answer 1 and should se ansewrid: " + $("#answer1").data("answerId"));
+				// console.log("chose answer: " + $(this).data("answerId"));
+				let chosenAnswerId = $(this).data("answer-card-id");
+				if (storeObject.activeCard.id === chosenAnswerId) {
 					// correct
 					console.log("Answered correctly");
 				}
@@ -126,63 +126,111 @@
 					// incorrect
 					console.log("Answered incorrectly");
 				}
+				storeObject.activeCardIndex = storeObject.activeCardIndex + 1;
+				//$.mobile.changePage("#page-deck");
+				$.mobile.pageContainer.pagecontainer("change", "#page-deck", { transition: "flow", changeHash: false, reload: false, allowSamePageTransition: true })
 
-				$.mobile.changePage("#page-deck");
 				console.log("answered a question");
 			});
 		});
 
+		let storeObject = {
+				activeDeckCode: "",
+				activeDeck: {},
+				activeCard: {},
+				activeCardIndex: 0
+			};
+		
 
-		// Store object
-		var storeObject = {
-			activeDeckId: 0,
-			activeDeckCode: "",
-			activeQuestionId: 0,
-			correctAnswerId: 0,
-			activeDeck: {}
+		function refreshStore() {
+			return {
+				activeDeckCode: "",
+				activeDeck: {},
+				activeCard: {},
+				activeCardIndex: 0
+			};
 		}
-
 		function selectDeck(deckCode) {
 			console.log("selected a deck: " + deckCode);
 			storeObject.activeDeckCode = deckCode;
-			$.getJSON("/data/" + deckCode + ".json", function (json) {
+		}
+
+		function resetAndGoToHome() {
+			storeObject = refreshStore();
+			$.mobile.changePage("#page-home");
+		}
+
+		$(document).on('pagebeforeshow', '#page-home', function () {
+
+			storeObject = refreshStore();
+		});
+
+		$(document).on('pagebeforeshow', '#page-deck', function () {
+
+			if (!storeObject.activeDeckCode) resetAndGoToHome();
+
+			$.getJSON("/data/" + storeObject.activeDeckCode + ".json", function (json) {
 				console.log(json); // this will show the info it in firebug console
 				storeObject.activeDeck = json;
 
 				// by default select the first question
-				initializeQuestion(1);
+				initializeQuestion(storeObject.activeCardIndex);
 			});
 
-			
+			// $('#movie-data').empty();
+			// $.each(movieInfo.result, function(i, row) {
+			//     if(row.id == movieInfo.id) {
+			//         var movieHandler = Handlebars.compile($("#movie-template").html());
+			//         $('#movie-data').html(movieHandler(row));                
+			//     } 
+			// });          
+			// $('#movie-data').listview('refresh');
+
+		});
+
+		function getRandomCard(cards, whereNotIndex) {
+			let randomIndex = whereNotIndex;
+			while (randomIndex == whereNotIndex) {
+				randomIndex = Math.floor(Math.random() * cards.length);
+			}
+			return cards[randomIndex];
 		}
 
-		function initializeQuestion(questionId) {
-			console.log("Initializing question: " + questionId);
-			storeObject.activeQuestionId = questionId;
+		function initializeQuestion(cardIndex) {
 
-			var activeCard = storeObject.activeDeck.cards[0];
-			var wrongCard1 = storeObject.activeDeck.cards[1];
-			var wrongCard2 = storeObject.activeDeck.cards[2];
+			storeObject.activeCardIndex = cardIndex;
+			
+			
+
+			storeObject.activeCard = storeObject.activeDeck.cards[cardIndex];
+
+			var activeCard = storeObject.activeDeck.cards[cardIndex];
+			let wrongCard1 = getRandomCard(storeObject.activeDeck.cards, cardIndex);
+			let wrongCard2 = getRandomCard(storeObject.activeDeck.cards, cardIndex);
+
+			// var wrongCard1 = storeObject.activeDeck.cards[cardIndex + 1];
+			// var wrongCard2 = storeObject.activeDeck.cards[cardIndex + 2];
 			//storeObject.correctAnswerId = 1;
 			// load up the deck, 
 			// load up the question
 			// load up 1 correct and 2 random answers
 
-console.log(activeCard, wrongCard1, wrongCard2);
+			console.log(activeCard, wrongCard1, wrongCard2);
 
 			$("#frontText").text(activeCard.f);
 			$("#backText").text(activeCard.f);
-			//$("#answer1").val("GOOD");
-			$("#answer1").attr("value", activeCard.b);
-			$("#answer1").data("answerId", 1);
-			//$("#answer2").val("BAD");
-			$("#answer2").attr("value", wrongCard1.b);
-			$("#answer2").data("answerId", 2);
-			//$("#answer3").val("UGLY");
-			$("#answer3").attr("value", wrongCard2.b);
-			$("#answer3").data("answerId", 3);
+			$("#answer1").html(activeCard.b);
+			//$("#answer1").html(activeCard.b);
+			$("#answer1").data("answer-card-id", activeCard.id);
+			// //$("#answer2").val("BAD");
+			$("#answer2").html(wrongCard1.b);
+			$("#answer2").data("answer-card-id", wrongCard1.id);
+			// //$("#answer3").val("UGLY");
+			$("#answer3").html(wrongCard2.b);
+			$("#answer3").data("answer-card-id", wrongCard2.id);
+			// $("#answer3").data("answerId", 3);
 
-			console.log("clicking answer 1 will give ansewrid: " + $("#answer1").data("answerId"));
+			//console.log("clicking answer 1 will give ansewrid: " + $("#answer1").data("answerId"));
 			// console.log($("#frontText").text("HYVA")); // = "test";
 		}
 
