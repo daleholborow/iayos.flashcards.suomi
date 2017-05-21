@@ -1,11 +1,22 @@
 {
     "id" : "1",
+    "code" : "deck_top_100_verbs",
     "title": "Top 100 Verbs",
-    "wordPairs" : [
+    "cards" : [
         {
             "id" : "1",
             "f" : "puhuu",
             "b" : "to speak"
+        },
+        {
+            "id" : "2",
+            "f" : "otaa",
+            "b" : "to buy"
+        },
+        {
+            "id" : "3",
+            "f" : "odotaa",
+            "b" : "to wait"
         }
     ]
 }

@@ -1,11 +1,22 @@
 {
     "id" : "2",
+    "code" : "deck_top_100_words",
     "title": "Top 100 Words",
-    "wordPairs" : [
+    "cards" : [
         {
             "id" : "1",
             "f" : "hyva",
             "b" : "good"
+        },
+        {
+            "id" : "2",
+            "f" : "kylla",
+            "b" : "yes"
+        },
+        {
+            "id" : "3",
+            "f" : "mutta",
+            "b" : "but"
         }
     ]
 }
