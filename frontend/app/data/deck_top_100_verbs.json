@@ -10,13 +10,13 @@
         },
         {
             "id" : "2",
-            "f" : "otaa",
-            "b" : "to buy"
+            "f" : "caminar",
+            "b" : "to walk"
         },
         {
             "id" : "3",
-            "f" : "odotaa",
-            "b" : "to wait"
+            "f" : "comprar",
+            "b" : "to buy"
         }
     ]
 }

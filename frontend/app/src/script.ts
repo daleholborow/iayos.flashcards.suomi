@@ -58,14 +58,34 @@
 
 		if (isCorrectAnswer) {
 			// animate a happy thing
+
+			$.mobile.pageContainer.pagecontainer("change", "#page-deck", {
+				transition: "slidefade", changeHash: false, reload: false, allowSamePageTransition: true
+			});
 		}
 		else {
 			// animate a sad thing
+			shake("card");
 		}
-		$.mobile.pageContainer.pagecontainer("change", "#page-deck", {
-			transition: "slidefade", changeHash: false, reload: false, allowSamePageTransition: true
-		});
+		// $.mobile.pageContainer.pagecontainer("change", "#page-deck", {
+		// 	transition: "slidefade", changeHash: false, reload: false, allowSamePageTransition: true
+		// });
 	});
+
+
+	function shake(elementId): void {
+		var div = document.getElementById(elementId);
+		var interval = 100;
+		var distance = 10;
+		var times = 5;
+		$(div).css('position', 'relative');
+		for (var iter = 0; iter < (times + 1); iter++) {
+			$(div).animate({
+				left: ((iter % 2 == 0 ? distance : distance * -1))
+			}, interval);
+		}
+		$(div).animate({ left: 0 }, interval);
+	}
 
 
 	function chooseAnswer(selectedCardId: number): boolean {
@@ -85,6 +105,7 @@
 		}
 
 		store.decks[store.activeDeckCode].cards[store.activeCardIndex].score += scoreIncrement;
+		saveStore();
 		console.log("Updated the score to  ", store.decks[store.activeDeckCode].cards[store.activeCardIndex].score);
 
 		return isCorrectAnswer;
@@ -175,41 +196,41 @@
 		// Always set to unflipped initially
 		var flip = $("#card").data("flip-model");
 		$("#card").flip(false);
-		//$(".front").show();
-		//$(".back").hide();
-		//$(".front").css("visibility", "visible");
-		//$(".back").css("visibility", "hidden");
 
 		let activeDeck = getActiveDeck();
 		let usedCardIndices: number[] = [];
 
-		let currentCardIndex = getRandomCardIndex(usedCardIndices);
-		usedCardIndices.push(currentCardIndex);
-		let activeCard = activeDeck.cards[currentCardIndex];
+		let randomCardIndex = getRandomCardIndex(usedCardIndices);
+		usedCardIndices.push(randomCardIndex);
+		let card = activeDeck.cards[randomCardIndex];
+		$("#answer1").html(card.b);
+		$("#answer1").data("answer-card-id", card.id);
 
-		let wrongCard1Index = getRandomCardIndex(usedCardIndices);
-		usedCardIndices.push(wrongCard1Index);
-		let wrongCard1 = activeDeck.cards[wrongCard1Index];
+		randomCardIndex = getRandomCardIndex(usedCardIndices);
+		usedCardIndices.push(randomCardIndex);
+		card = activeDeck.cards[randomCardIndex];
+		$("#answer2").html(card.b);
+		$("#answer2").data("answer-card-id", card.id);
 
-		let wrongCard2Index = getRandomCardIndex(usedCardIndices);
-		usedCardIndices.push(wrongCard2Index);
-		let wrongCard2 = activeDeck.cards[wrongCard2Index];
+		randomCardIndex = getRandomCardIndex(usedCardIndices);
+		usedCardIndices.push(randomCardIndex);
+		card = activeDeck.cards[randomCardIndex];
+		$("#answer3").html(card.b);
+		$("#answer3").data("answer-card-id", card.id);
 
-		$("#frontText").text(activeCard.f);
-		$("#backText").text(activeCard.f);
-		$("#answer1").html(activeCard.b);
-		$("#answer1").data("answer-card-id", activeCard.id);
-		$("#answer2").html(wrongCard1.b);
-		$("#answer2").data("answer-card-id", wrongCard1.id);
-		$("#answer3").html(wrongCard2.b);
-		$("#answer3").data("answer-card-id", wrongCard2.id);
+		// which one to use as the front?
+		let currentCardIndex = usedCardIndices[Math.floor(Math.random() * usedCardIndices.length)];
+		let currentCard = activeDeck.cards[currentCardIndex];
+		store.activeCardIndex = currentCardIndex;
+		$("#frontText").text(currentCard.f);
+		$("#backText").text(currentCard.f);
 	}
 
 
 	function getRandomCardIndex(usedCardIndices: number[]): number {
 		let randomIndex: number = -1;
 		let activeDeck = getActiveDeck();
-		while (randomIndex == -1 || !!usedCardIndices.find(x => x == randomIndex)) {
+		while (randomIndex == -1 || $.inArray(randomIndex, usedCardIndices) != -1) {
 			randomIndex = Math.floor(Math.random() * activeDeck.cards.length);
 		}
 		return randomIndex;
