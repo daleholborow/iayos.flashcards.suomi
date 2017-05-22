@@ -45,7 +45,10 @@
 
 
 	function flipToBack(): void {
-		$("#flashcard").flip('toggle');
+		//$(".front").css("visibility", "hidden");
+		//$(".back").css("visibility", "visible");
+		$("#card").flip('toggle');
+		//$("#card").flip();
 	}
 
 
@@ -135,7 +138,7 @@
 	});
 
 
-	$("#flashcard").flip({
+	$("#card").flip({
 		trigger: 'manual'
 	});
 
@@ -153,6 +156,8 @@
 
 	$(document).on('pagebeforeshow', '#page-deck', function () {
 
+		$("#page-deck-header").html(getActiveDeck().title);
+
 		// we might want to do something like show the scoreboard every now and then? or maybe an advertisement
 
 		if (false) {
@@ -168,9 +173,12 @@
 	function renderRandomCard(): void {
 
 		// Always set to unflipped initially
-		var flip = $("#flashcard").data("flip-model");
-		$("#flashcard").flip(false);
-
+		var flip = $("#card").data("flip-model");
+		$("#card").flip(false);
+		//$(".front").show();
+		//$(".back").hide();
+		//$(".front").css("visibility", "visible");
+		//$(".back").css("visibility", "hidden");
 
 		let activeDeck = getActiveDeck();
 		let usedCardIndices: number[] = [];
@@ -199,7 +207,6 @@
 
 
 	function getRandomCardIndex(usedCardIndices: number[]): number {
-		// if (usedCardIndices.length == 0)
 		let randomIndex: number = -1;
 		let activeDeck = getActiveDeck();
 		while (randomIndex == -1 || !!usedCardIndices.find(x => x == randomIndex)) {

@@ -10,21 +10,24 @@
 </head>
 
 <body>
-	<div data-role="page" id="page-home">
-		<div data-role="header">
-			<div data-role="header" data-position="fixed">
-				<h3>Simple Suomi</h3>
-				<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
-				<a href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>
-			</div>
-		</div>
 
-		<div role="main" class="ui-content jqm-content jqm-fullwidth" <h3 class="ui-bar ui-bar-a ui-corner-all">Simple Suomi Flashcards</h3>
-			[blah blah blah, ]show most populor OR logged in user's latest / favs - show resume]
+	<div data-role="page" id="page-home">
+		<div data-role="header" data-position="fixed">
+			<h3>Simple Suomi</h3>
+			<a href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>
+			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+			
+		</div>
+		<!--<div role="main" class="ui-content jqm-content jqm-fullwidth" >-->
+		<div role="main" class="ui-content">
+			<h4 class="ui-bar ui-bar-a">Welcome</h4>
+			<p>
+				Welcome to Simple Suomi. Dive into a free flashcard list now!
+			</p>
 			<h4 class="ui-bar ui-bar-a">Most Popular</h4>
 			<ul data-role="listview" data-inset="true">
-				<li><a class="select-deck" data-deck-code="deck_top_100_verbs">Top 100 Finnish Words</a></li>
-				<li><a class="select-deck" data-deck-code="deck_top_100_words">Top 50 Holiday Phrases</a></li>
+				<li><a class="select-deck" data-deck-code="deck_top_100_verbs">Top 100 Verbs</a></li>
+				<li><a class="select-deck" data-deck-code="deck_top_100_words">Top 100 Words`</a></li>
 				<!--<li><a class="select-deck" >Top 50 Verbs</a></li>
 				<li><a class="select-deck" >Opposites Attract</a></li>-->
 			</ul>
@@ -33,10 +36,10 @@
 			<!--<div data-demo-html="#panel-fixed-page1"></div>-->
 		</div>
 		<div data-role="footer" data-position="fixed">
-			<h4>homepage footer</h4>
+			<h4 class="footer-text">simple suomi</h4>
 		</div>
 	</div>
-
+<!--
 	<div data-role="page" id="page-contact">
 		<div data-role="header" data-position="fixed">
 			<h1>Contact Simple Suomi</h1>
@@ -45,28 +48,33 @@
 		<div role="main" class="ui-content">...</div>
 		div data-role="footer" data-position="fixed">
 		<h4>contact footer</h4>
-	</div>
+	</div>-->
 
 
 	<div data-role="page" id="page-deck">
 		<div data-role="header" data-position="fixed">
-			<h3>Deck: [deck name]]</h3>
+			<h3 id="page-deck-header">Deck: [deck name]]</h3>
 			<a href="#page-home" data-icon="home" data-iconpos="notext">Home</a>
 			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
 		</div>
 		<div role="main" class="ui-content">
 			<div class="ui-body ui-body-a ui-corner-all ">
-				<div id="flashcard" class="flip">
+				<div id="card" class="flip">
+
 					<div class="front">
 						<p class="iayos-center">
+							<br/>
+							<br/>
+							<br/>
 							<span id="frontText"></span>
 						</p>
 						<hr/>
-						<br/>
 					</div>
+
 					<div class="back">
+						<br />
 						<p class="iayos-center">
-							<span id="backText"></span>
+							<span id="backText">test</span>
 						</p>
 						<hr/>
 						<p class="iayos-center">
@@ -81,10 +89,13 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- put an advert in here? -->
+
 			<input id="toggle-flashcard" type="button" value="FLIP">
-			<button id="btn-read" class="button" value="READ TO ME">READ TO ME</button>
+			<!--<button id="btn-read" class="button" value="READ TO ME">READ TO ME</button>-->
 			<button id="btn-scoreboard" class="button" value="scoreboard">View Score </button>
-			
+
 		</div>
 		<div data-role="footer" data-position="fixed">
 			<h4>deck footer</h4>
@@ -111,8 +122,8 @@
 	<script src="js/jquery-2.1.4/jquery-2.1.4.min.js"></script>
 	<script src="js/jquery.flip/jquery.flip.min.js"></script>
 	<script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="dist/model.js"></script>
 	<script src="dist/script.js"></script>
 </body>
 
 </html>
-
