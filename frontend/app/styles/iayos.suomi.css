@@ -1,0 +1,36 @@
+
+.iayos-center{
+  text-align: center;
+}
+
+.iayos-center * {
+  margin: 0 auto;
+}
+
+
+.flip .front {
+    /*background: #2184cd;
+    color: red;*/
+    text-align: center;
+}
+
+.flip .back {
+    /*background: #2184cd;
+    color: #fff;*/
+    text-align: center;
+}
+
+/*
+
+.flip {
+    height: 199px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.flip img {
+    width: 300px;
+    height: auto;
+}
+
+*/
