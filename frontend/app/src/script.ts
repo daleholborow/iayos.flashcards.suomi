@@ -1,45 +1,23 @@
 /// <reference path="../../typings/index.d.ts" />
+/// <reference path='./model.ts' />
+
 
 (function () {
 
-	class Card {
-		id: number = -1;
-		f: string = null;	// front
-		b: string = null;  // back
-		score: number = 0;		// how many times has the user answered this correctly
-	}
-
-	class Deck {
-		id: number = -1;
-		code: string = null;
-		title: string = null;
-		cards: Card[] = [];
-	}
-
-	class DeckStore {
-
-		activeDeckCode: string = null;
-		activeCardIndex: number = 0;
-		decks: Deck[] = [];
-
-		constructor() {
-		}
-	}
-
+	const required_score = 10;
 	const store_key = "store";
-	let store: DeckStore;
+	let store: flashcards.DeckStore;
 	store = getStore();
 
 
-	function activeDeck(): Deck {
-		let deck = store.decks[store.activeDeckCode];
-		return deck;
+	function saveStore(): void {
+		localStorage.setItem(store_key, JSON.stringify(store));
 	}
 
 
-	function getStore(): DeckStore {
+	function getStore(): flashcards.DeckStore {
 		if (localStorage.getItem(store_key) === null) {
-			store = new DeckStore();
+			store = new flashcards.DeckStore();
 			saveStore();
 		}
 		else {
@@ -49,29 +27,7 @@
 	}
 
 
-	function saveStore() {
-		localStorage.setItem(store_key, JSON.stringify(store));
-	}
-
-
-	$("#flashcard").flip({
-		trigger: 'manual'
-	});
-
-
-	$("#toggle-flashcard").click(function () {
-		$("#flashcard").flip('toggle');
-	});
-
-
-	$(document).on('click', '.select-deck', function () {
-		let selectedDeckCode = $(this).data("deck-code");
-		selectDeck(selectedDeckCode);
-		$.mobile.pageContainer.pagecontainer("change", "#page-deck", { transition: "flow", changeHash: false, reload: false, allowSamePageTransition: false });
-	});
-
-
-	function selectDeck(deckCode) {
+	function updateSelectedDeck(deckCode: string): void {
 		store.activeDeckCode = deckCode;
 		store.activeCardIndex = 0;
 
@@ -83,58 +39,153 @@
 				$.ajaxSetup({ "async": false });
 			});
 		} else {
-			console.log("found a deck in the store:", store.decks[deckCode]);
+			console.log("Selected deck already existed in store", store.decks[deckCode]);
 		}
 	}
 
 
-	function resetDeckAndGoToHomepage() {
-		store.activeDeckCode = null;
-		store.activeCardIndex = 0;
-		saveStore();
-		$.mobile.pageContainer.pagecontainer("change", "#page-home", { transition: "flow", changeHash: false, reload: true, allowSamePageTransition: false });
+	function flipToBack(): void {
+		$("#flashcard").flip('toggle');
 	}
 
 
-	function cardCanBeDisplayed() {
-		if (
-			!!store.activeDeckCode === false
-			|| !(store.activeCardIndex >= 0)
-			|| !!store.decks[store.activeDeckCode] === false
-		) resetDeckAndGoToHomepage();
-		if (store.activeCardIndex == store.decks[store.activeDeckCode].cards.length) {
-			goToScoreBoard();
-			return false;
+	$(document).on('click', '.answer-button', function () {
+		let chosenAnswerId = $(this).data("answer-card-id");
+		let isCorrectAnswer: boolean = chooseAnswer(chosenAnswerId);
+
+		if (isCorrectAnswer) {
+			// animate a happy thing
 		}
-		return true;
+		else {
+			// animate a sad thing
+		}
+		$.mobile.pageContainer.pagecontainer("change", "#page-deck", {
+			transition: "slidefade", changeHash: false, reload: false, allowSamePageTransition: true
+		});
+	});
+
+
+	function chooseAnswer(selectedCardId: number): boolean {
+
+		// Because we deserialized store from JSON some properties might not be set correctly
+		if (!!(store.decks[store.activeDeckCode].cards[store.activeCardIndex].score) == false) {
+			store.decks[store.activeDeckCode].cards[store.activeCardIndex].score = 0;
+		}
+
+		let scoreIncrement: number = 0;
+		let isCorrectAnswer: boolean = validateAnswer(selectedCardId);
+		if (isCorrectAnswer) {
+			scoreIncrement = 1;
+		}
+		else {
+			scoreIncrement = -1;
+		}
+
+		store.decks[store.activeDeckCode].cards[store.activeCardIndex].score += scoreIncrement;
+		console.log("Updated the score to  ", store.decks[store.activeDeckCode].cards[store.activeCardIndex].score);
+
+		return isCorrectAnswer;
 	}
 
 
-	function goToScoreBoard() {
-		console.log("should move to scoreboard");
-		$.mobile.pageContainer.pagecontainer("change", "#page-scoreboard", { transition: "flow", changeHash: false, reload: true, allowSamePageTransition: false });
+	function validateAnswer(selectedCardId: number): boolean {
+		// get the correct answer
+		let correctCard: flashcards.Card = getActiveDeck().cards[store.activeCardIndex];
+		let isCorrectAnswer: boolean = (correctCard.id === selectedCardId);
+		return isCorrectAnswer;
+	}
+
+
+	function navToHome(): void {
+		$.mobile.pageContainer.pagecontainer("change", "#page-home", {
+			transition: "fade", changeHash: false, reload: true, allowSamePageTransition: false
+		});
+	}
+
+
+	function navToScoreboard(): void {
+		$.mobile.pageContainer.pagecontainer("change", "#page-scoreboard", {
+			transition: "slide", changeHash: false, reload: true, allowSamePageTransition: false
+		});
+	}
+
+
+	function goToScoreBoard(): void {
+		$.mobile.pageContainer.pagecontainer("change", "#page-scoreboard", {
+			transition: "fade", changeHash: false, reload: false, allowSamePageTransition: false
+		});
+	}
+
+
+	$("#btn-scoreboard").on('click', function () {
+
+		goToScoreBoard();
+
+	});
+
+
+	$(document).on('click', '.select-deck', function () {
+
+		let selectedDeckCode = $(this).data("deck-code");
+		updateSelectedDeck(selectedDeckCode);
+
+		// Navigate to the deck view page
+		$.mobile.pageContainer.pagecontainer("change", "#page-deck", { transition: "flow", changeHash: false, reload: false, allowSamePageTransition: false });
+
+	});
+
+
+	$("#flashcard").flip({
+		trigger: 'manual'
+	});
+
+
+	$("#toggle-flashcard").click(function () {
+		flipToBack();
+	});
+
+
+	function getActiveDeck(): flashcards.Deck {
+		let deck = store.decks[store.activeDeckCode];
+		return deck;
 	}
 
 
 	$(document).on('pagebeforeshow', '#page-deck', function () {
-		renderCard();
+
+		// we might want to do something like show the scoreboard every now and then? or maybe an advertisement
+
+		if (false) {
+			// show advert every 10th page ??
+
+		}
+		else {
+			renderRandomCard();
+		}
 	});
 
 
-	function renderCard() {
-
-		let isValid = cardCanBeDisplayed();
-		if (isValid == false) return;
+	function renderRandomCard(): void {
 
 		// Always set to unflipped initially
 		var flip = $("#flashcard").data("flip-model");
 		$("#flashcard").flip(false);
-		
-		let cardIndex: number = store.activeCardIndex;
 
-		let activeCard = activeDeck().cards[cardIndex];
-		let wrongCard1 = getRandomCard(cardIndex);
-		let wrongCard2 = getRandomCard(cardIndex);
+
+		let activeDeck = getActiveDeck();
+		let usedCardIndices: number[] = [];
+
+		let currentCardIndex = getRandomCardIndex(usedCardIndices);
+		usedCardIndices.push(currentCardIndex);
+		let activeCard = activeDeck.cards[currentCardIndex];
+
+		let wrongCard1Index = getRandomCardIndex(usedCardIndices);
+		usedCardIndices.push(wrongCard1Index);
+		let wrongCard1 = activeDeck.cards[wrongCard1Index];
+
+		let wrongCard2Index = getRandomCardIndex(usedCardIndices);
+		usedCardIndices.push(wrongCard2Index);
+		let wrongCard2 = activeDeck.cards[wrongCard2Index];
 
 		$("#frontText").text(activeCard.f);
 		$("#backText").text(activeCard.f);
@@ -147,40 +198,14 @@
 	}
 
 
-	function getRandomCard(whereNotIndex) {
-		let randomIndex = whereNotIndex;
-		let activeDeckCards = activeDeck().cards;
-		while (randomIndex == whereNotIndex) {
-			randomIndex = Math.floor(Math.random() * activeDeckCards.length);
+	function getRandomCardIndex(usedCardIndices: number[]): number {
+		// if (usedCardIndices.length == 0)
+		let randomIndex: number = -1;
+		let activeDeck = getActiveDeck();
+		while (randomIndex == -1 || !!usedCardIndices.find(x => x == randomIndex)) {
+			randomIndex = Math.floor(Math.random() * activeDeck.cards.length);
 		}
-		return activeDeckCards[randomIndex];
+		return randomIndex;
 	}
 
-
-
-	$(document).on('click', '.answer-button', function () {
-		let chosenAnswerId = $(this).data("answer-card-id");
-		let scoreIncrement = 0;
-		if (store.decks[store.activeDeckCode].cards[store.activeCardIndex].id === chosenAnswerId) {
-			// correct
-			console.log("Answered correctly");
-			scoreIncrement = 1;
-		}
-		else {
-			// incorrect
-			console.log("Answered incorrectly");
-			scoreIncrement = -1;
-		}
-
-		// Because we deserialized store from JSON some properties might not be set correctly
-		if (!!(store.decks[store.activeDeckCode].cards[store.activeCardIndex].score) == false) {
-			store.decks[store.activeDeckCode].cards[store.activeCardIndex].score = 0;
-		}
-		store.decks[store.activeDeckCode].cards[store.activeCardIndex].score += scoreIncrement;
-		store.activeCardIndex = store.activeCardIndex + 1;
-		saveStore();
-
-		$.mobile.pageContainer.pagecontainer("change", "#page-deck", { transition: "flow", changeHash: false, reload: false, allowSamePageTransition: true })
-
-	});
 })();
