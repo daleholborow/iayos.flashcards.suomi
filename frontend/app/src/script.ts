@@ -122,28 +122,23 @@
 
 	function navToHome(): void {
 		$.mobile.pageContainer.pagecontainer("change", "#page-home", {
-			transition: "fade", changeHash: false, reload: true, allowSamePageTransition: false
+			transition: "flip", changeHash: false, reload: true, allowSamePageTransition: false
 		});
 	}
 
 
 	function navToScoreboard(): void {
 		$.mobile.pageContainer.pagecontainer("change", "#page-scoreboard", {
-			transition: "slide", changeHash: false, reload: true, allowSamePageTransition: false
+			transition: "flip", changeHash: false, reload: false, allowSamePageTransition: false
 		});
 	}
 
 
-	function goToScoreBoard(): void {
-		$.mobile.pageContainer.pagecontainer("change", "#page-scoreboard", {
-			transition: "fade", changeHash: false, reload: false, allowSamePageTransition: false
-		});
-	}
-
+	
 
 	$("#btn-scoreboard").on('click', function () {
 
-		goToScoreBoard();
+		navToScoreboard();
 
 	});
 
@@ -154,7 +149,7 @@
 		updateSelectedDeck(selectedDeckCode);
 
 		// Navigate to the deck view page
-		$.mobile.pageContainer.pagecontainer("change", "#page-deck", { transition: "flow", changeHash: false, reload: false, allowSamePageTransition: false });
+		$.mobile.pageContainer.pagecontainer("change", "#page-deck", { transition: "flip", changeHash: false, reload: false, allowSamePageTransition: false });
 
 	});
 
@@ -174,6 +169,25 @@
 		return deck;
 	}
 
+
+$(document).on('pagebeforeshow', "#page-scoreboard", function() {
+	let myTemplatevalue : string = "dale replace this";
+	let scoresList = $("#list-card-scores");
+	scoresList.append(` 
+	<li> 
+		<a href="#"> 
+			<h2>${myTemplatevalue}</h2> 
+			<p>
+				Right: <br/>
+				Wrong: 
+			</p>
+			<p>Broken Bells</p>
+		</a>
+		<a href="#" data-rel="popup">reset score</a>
+	</li>
+	`);
+	scoresList.listview('refresh');
+});
 
 	$(document).on('pagebeforeshow', '#page-deck', function () {
 
