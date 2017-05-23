@@ -33,10 +33,11 @@
 		store.activeDeckCode = deckCode;
 		store.activeCardIndex = 0;
 
-		if (!!store.decks[deckCode] == false) {
+		if (!!getActiveDeck() == false) {
+			console.log("trying to update selected and didnt find in cache");
 			$.ajaxSetup({ "async": false });
 			$.getJSON("/data/" + deckCode + ".json", function (json) {
-				store.decks[deckCode] = json;
+				store.decks[store.decks.length] = json;
 				saveStore();
 				console.log("saved a new deck into store", store);
 				$.ajaxSetup({ "async": false });
@@ -104,30 +105,31 @@
 
 	function chooseAnswer(selectedCardId: number): boolean {
 
+		let activeDeck = getActiveDeck();
 		// Because we deserialized store from JSON some properties might not be set correctly
-		if (!!(store.decks[store.activeDeckCode].cards[store.activeCardIndex].r) == false) {
-			store.decks[store.activeDeckCode].cards[store.activeCardIndex].r = 0;
+		if (!!(activeDeck.cards[store.activeCardIndex].r) == false) {
+			activeDeck.cards[store.activeCardIndex].r = 0;
 		}
-		if (!!(store.decks[store.activeDeckCode].cards[store.activeCardIndex].w) == false) {
-			store.decks[store.activeDeckCode].cards[store.activeCardIndex].w = 0;
+		if (!!(activeDeck.cards[store.activeCardIndex].w) == false) {
+			activeDeck.cards[store.activeCardIndex].w = 0;
 		}
 
 		let isCorrectAnswer: boolean = validateAnswer(selectedCardId);
 		if (isCorrectAnswer) {
-			store.decks[store.activeDeckCode].cards[store.activeCardIndex].r += 1;
+			activeDeck.cards[store.activeCardIndex].r += 1;
 		}
 		else {
-			store.decks[store.activeDeckCode].cards[store.activeCardIndex].w += 1;
+			activeDeck.cards[store.activeCardIndex].w += 1;
 		}
 		
 		saveStore();
 		
 		console.log("Updated the score to  ", 
-			store.decks[store.activeDeckCode].cards[store.activeCardIndex].r,
-			store.decks[store.activeDeckCode].cards[store.activeCardIndex].w,
-			store.decks[store.activeDeckCode].cards[store.activeCardIndex].r / (
-				store.decks[store.activeDeckCode].cards[store.activeCardIndex].r + 
-				store.decks[store.activeDeckCode].cards[store.activeCardIndex].w
+			activeDeck.cards[store.activeCardIndex].r,
+			activeDeck.cards[store.activeCardIndex].w,
+			activeDeck.cards[store.activeCardIndex].r / (
+				activeDeck.cards[store.activeCardIndex].r + 
+				activeDeck.cards[store.activeCardIndex].w
 			)
 		);
 
@@ -186,7 +188,7 @@
 
 
 	function getActiveDeck(): flashcards.Deck {
-		let deck = store.decks[store.activeDeckCode];
+		let deck = store.decks.find(x => x.code == store.activeDeckCode);
 		return deck;
 	}
 
