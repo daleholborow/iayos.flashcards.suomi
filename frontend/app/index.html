@@ -103,13 +103,46 @@
 
 	<div data-role="page" id="page-scoreboard">
 		<div data-role="header" data-position="fixed">
-			<h3>Deck: [deck name]]</h3>
+			<h3>Scoreboard</h3>
 			<a href="#page-home" data-icon="home" data-iconpos="notext">Home</a>
 			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
 		</div>
 		<div role="main" class="ui-content">
 			<div class="ui-body ui-body-a ui-corner-all ">
-				thisa is the sacoreboard
+				<h3>[Deckname]</h3>
+				
+				View your score for each card in the deck. To learn a card again, reset the 
+				score - it will appear more often!
+
+				<ul data-role="listview" data-split-icon="delete" data-split-theme="a" data-inset="true">
+					<li>
+						<a href="#">
+							<h2>Broken Bells</h2>
+							<p>Broken Bells</p>
+						</a>
+						<a href="#purchase" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a>
+					</li>
+					<li>
+						<a href="#">
+							<h2>Warning</h2>
+							<p>Hot Chip</p>
+						</a>
+						<a href="#purchase" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a>
+					</li>
+					<li>
+						<a href="#">
+							<h2>Wolfgang Amadeus Phoenix</h2>
+							<p>Phoenix</p>
+						</a>
+						<a href="#purchase" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a>
+					</li>
+				</ul>
+				<div data-role="popup" id="purchase" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+					<h3>Reset Card Score?</h3>
+					<p>Your score will reset to zero and you will see the card in the items to learn more often</p>
+					<a href="#page-scoreboard" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini">Clear Score</a>
+					<a href="#page-scoreboard" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini">Cancel</a>
+				</div>
 			</div>
 		</div>
 		<div data-role="footer" data-position="fixed">
