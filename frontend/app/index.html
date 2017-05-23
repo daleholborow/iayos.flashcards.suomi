@@ -14,18 +14,16 @@
 	<div data-role="page" id="page-home">
 		<div data-role="header" data-position="fixed">
 			<h3>Simple Suomi</h3>
-			<a href="#add-form" data-transition="flip" data-icon="gear" data-iconpos="notext">Add</a>
-			<a href="#nav-panel" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>
-
+			<!--<a href="#add-form" data-transition="flip" data-icon="gear" data-iconpos="notext">Add</a>-->
+			<!--<a href="#page-scoreboard" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>-->
 		</div>
-		<!--<div role="main" class="ui-content jqm-content jqm-fullwidth" >-->
 		<div role="main" class="ui-content">
-			<h4 class="ui-bar ui-bar-a">Welcome</h4>
+			<h5 class="ui-bar ui-bar-a">Welcome to Simple Suomi Flashcards!</h5>
 			<p>
-				Welcome to Simple Suomi. Dive into a free flashcard list now!
+				Dive into a deck and get learning Finnish for free now!
 			</p>
 			<h4 class="ui-bar ui-bar-a">Most Popular</h4>
-			<ul data-role="listview" data-inset="true" >
+			<ul data-role="listview" data-inset="true">
 				<li><a class="select-deck" data-deck-code="deck_top_100_verbs">Top 100 Verbs</a></li>
 				<li><a class="select-deck" data-deck-code="deck_top_100_words">Top 100 Words</a></li>
 				<!--<li><a class="select-deck" >Top 50 Verbs</a></li>
@@ -36,7 +34,7 @@
 			<!--<div data-demo-html="#panel-fixed-page1"></div>-->
 		</div>
 		<div data-role="footer" data-position="fixed">
-			<h4 class="footer-text">simple suomi</h4>
+			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
 		</div>
 	</div>
 
@@ -47,16 +45,19 @@
 			- contact form to submit feedback
 		</div>
 		<div role="main" class="ui-content">...</div>
-		div data-role="footer" data-position="fixed">
-		<h4>contact footer</h4>
+		<div data-role="footer" data-position="fixed">
+			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
+		</div>
 	</div>-->
 
 
 	<div data-role="page" id="page-deck">
 		<div data-role="header" data-position="fixed">
-			<h3 id="page-deck-header">Deck: [deck name]]</h3>
+			<h3 id="page-deck-header">[deck name]]</h3>
+			<!--
+			<a href="#nav-panel" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>-->
 			<a href="#page-home" data-transition="flip" data-icon="home" data-iconpos="notext">Home</a>
-			<a href="#nav-panel" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>
+			<a href="#page-scoreboard" data-transition="flip" data-icon="edit" data-iconpos="notext">Scoreboard</a>
 		</div>
 		<div role="main" class="ui-content">
 			<div class="ui-body ui-body-a ui-corner-all ">
@@ -94,66 +95,41 @@
 				<!-- put an advert in here? -->
 				<input id="toggle-flashcard" type="button" value="FLIP">
 				<!--<button id="btn-read" class="button" value="READ TO ME">READ TO ME</button>-->
-				<button id="btn-scoreboard" class="button" value="scoreboard">View Deck Scoreboard </button>
+				<!--<button id="btn-scoreboard" class="button" value="scoreboard">View Deck Scoreboard </button>-->
 			</div>
 		</div>
 		<div data-role="footer" data-position="fixed">
-			<h4>deck footer</h4>
+			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
 		</div>
 	</div>
 
 	<div data-role="page" id="page-scoreboard">
 		<div data-role="header" data-position="fixed">
 			<h3>Scoreboard</h3>
-			<a href="#page-home" data-icon="home" data-iconpos="notext">Home</a>
-			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+			<a href="#page-home" data-transition="flip" data-icon="home" data-iconpos="notext">Home</a>
+			<a href="#page-deck" data-transition="flip" data-icon="back" data-iconpos="notext">Back to Deck</a>
 		</div>
 		<div role="main" class="ui-content">
 			<div class="ui-body ui-body-a ui-corner-all ">
-				<h3 id="hd-scoreboard-deckname">[Deckname]</h3>
-				
-				View your score for each card in the deck. To learn a card again, reset the 
-				score - it will appear more often!
-
-				<ul data-role="listview" data-split-icon="delete" data-split-theme="a" data-inset="true" id="list-card-scores">
-					<!--<li>
-						<a href="#">
-							<h2>Broken Bells</h2>
-							<p>Broken Bells</p>
-						</a>
-						<a href="#" data-rel="popup">reset score</a>
-					</li>
-					<li>
-						<a href="#">
-							<h2>Warning</h2>
-							<p>Hot Chip</p>
-						</a>
-						<a href="#popup-reset-score" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a>
-					</li>
-					<li>
-						<a href="#">
-							<h2>Wolfgang Amadeus Phoenix</h2>
-							<p>Phoenix</p>
-						</a>
-						<a href="#popup-reset-score" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a>
-					</li>-->
-				</ul>
-				<!--<div data-role="popup" id="popup-reset-score" data-reload="false" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-					<h3>Reset Card Score?</h3>
-					<p>Your score will reset to zero and you will see the card in the items to learn more often</p>
-					<a href="#page-scoreboard" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini">Clear Score</a>
-					<a href="#page-scoreboard" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini">Cancel</a>
-				</div>-->
-				<!--<div data-role="page" data-reload="false" data-dialog="true" id="popup-reset-score" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
-					<h3>Reset Card Score?</h3>
-					<p>Your score will reset to zero and you will see the card in the items to learn more often</p>
-					<a href="#page-scoreboard" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini">Clear Score</a>
-					<a href="#page-scoreboard" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini">Cancel</a>
-				</div>-->
+				<h4 id="hd-scoreboard-deckname" class="ui-bar ui-bar-a">[Deckname]</h4>
+				<p>
+					View your score for each card in the deck. To learn a card again, reset the score - it will appear more often!
+				</p>
+				<table class="ui-table" id="table-scoreboard" border="0">
+					<thead>
+						<tr>
+							<th data-priority="1">Card</th>
+							<th data-priority="2" rowspan="2" style="width: 10%">Accuracy</th>
+							<th data-priority="3" rowspan="2" style="width: 10%">Reset</th>
+						</tr>
+					</thead>
+					<tbody id="tbody-cardscores">
+					</tbody>
+				</table>
 			</div>
 		</div>
 		<div data-role="footer" data-position="fixed">
-			<h4>scoreboard footer</h4>
+			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
 		</div>
 	</div>
 
