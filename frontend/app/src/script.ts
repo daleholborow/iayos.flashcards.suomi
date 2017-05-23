@@ -45,12 +45,23 @@
 
 
 	function flipToBack(): void {
-		//$(".front").css("visibility", "hidden");
-		//$(".back").css("visibility", "visible");
-		$("#card").flip('toggle');
-		//$("#card").flip();
+
+		// Couldnt pass options to callback in flip, 
+		$('.answer-button').css('opacity', '0.0'); 
+				
+		// var flip = $("#card").data("flip-model");
+		// // e.g. to see currect flip state
+		// flip.isFlipped;
+
+		$("#card").flip('toggle', ensureAnswerButtonsVisible);
 	}
 
+
+	function ensureAnswerButtonsVisible() : void {
+		// make the answer buttons show now... they are misbehaving
+		$('.answer-button').css('opacity', '1.0');  // visible maximum
+	}
+	
 
 	$(document).on('click', '.answer-button', function () {
 		let chosenAnswerId = $(this).data("answer-card-id");
@@ -173,6 +184,7 @@
 $(document).on('pagebeforeshow', "#page-scoreboard", function() {
 	let myTemplatevalue : string = "dale replace this";
 	let scoresList = $("#list-card-scores");
+	scoresList.empty();
 	scoresList.append(` 
 	<li> 
 		<a href="#"> 
@@ -237,7 +249,7 @@ $(document).on('pagebeforeshow', "#page-scoreboard", function() {
 		let currentCard = activeDeck.cards[currentCardIndex];
 		store.activeCardIndex = currentCardIndex;
 		$("#frontText").text(currentCard.f);
-		$("#backText").text(currentCard.f);
+		$("#backText").text(currentCard.f); 
 	}
 
 

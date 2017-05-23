@@ -81,3 +81,8 @@ body,
     box-pack:center;
     box-align:center;
 }
+
+.answer-button {
+    /*display: none;*/
+    /*visibility: hidden;*/
+}
