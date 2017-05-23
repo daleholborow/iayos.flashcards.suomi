@@ -29,7 +29,7 @@
 		else {
 
 			store = JSON.parse(localStorage.getItem(store_key));
-			console.log("loaded store from localstorage", store);
+			//console.log("loaded store from localstorage", store);
 		}
 		return store;
 	}
@@ -43,7 +43,7 @@
 		store.activeCardIndex = 0;
 
 		if (!!getActiveDeck() == false) {
-			console.log("trying to update selected and didnt find in cache");
+			//console.log("trying to update selected and didnt find in cache");
 			$.ajaxSetup({ "async": false });
 			$.getJSON("/data/" + deckCode + ".json", function (json) {
 				store.decks[store.decks.length] = json;
@@ -52,7 +52,7 @@
 				$.ajaxSetup({ "async": false });
 			});
 		} else {
-			console.log("Selected deck already existed in store", store.decks[deckCode]);
+			//console.log("Selected deck already existed in store", store.decks[deckCode]);
 		}
 	}
 
@@ -148,14 +148,14 @@
 
 		saveStore();
 
-		console.log("Updated the score to  ",
-			activeDeck.cards[store.activeCardIndex].r,
-			activeDeck.cards[store.activeCardIndex].w,
-			activeDeck.cards[store.activeCardIndex].r / (
-				activeDeck.cards[store.activeCardIndex].r +
-				activeDeck.cards[store.activeCardIndex].w
-			)
-		);
+		// console.log("Updated the score to  ",
+		// 	activeDeck.cards[store.activeCardIndex].r,
+		// 	activeDeck.cards[store.activeCardIndex].w,
+		// 	activeDeck.cards[store.activeCardIndex].r / (
+		// 		activeDeck.cards[store.activeCardIndex].r +
+		// 		activeDeck.cards[store.activeCardIndex].w
+		// 	)
+		// );
 
 		return isCorrectAnswer;
 	}
@@ -245,12 +245,8 @@
 		
 	*/
 	function calculateAccuracy(right: number, wrong: number): number {
-		// console.log("right:" + !!right, right);
-		// console.log("wrong:" + !!wrong, wrong);
 		let x = (!!right) ? right : 0;
 		let y = (!!wrong) ? wrong : 0;
-		// console.log("i have x and y", x, y);
-		//if (!!right == false || !!wrong == false) return 0;
 		if (x == 0 && y == 0) return 0;
 		return Math.floor((right / (right + wrong)) * 100);
 	}
@@ -271,9 +267,11 @@
 			scoresTbl.append(`
 				<tr>
 					<td>${card.f}</td>
-					<td rowspan="2">${accuracy}%</td>
-					<td rowspan="2" >
-						<a href="#" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext">Delete</a>
+					<td rowspan="2"><div class="center">${accuracy}%</div></td>
+					<td rowspan="2">
+						<div class="center">
+							<a href="#" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext">Delete</a>
+						</div>
 					</td>
 				</tr>
 				<tr>
