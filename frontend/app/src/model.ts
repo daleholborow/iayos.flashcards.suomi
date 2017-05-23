@@ -3,7 +3,8 @@ module flashcards {
 		id: number = -1;
 		f: string = null;	// front
 		b: string = null;  // back
-		score: number = 0;		// how many times has the user answered this correctly
+		r: number = 0;		// how many times has the user answered this correctly
+		w: number = 0;		// how many times has the user answered this incorrectly
 	}
 
 	export class Deck {

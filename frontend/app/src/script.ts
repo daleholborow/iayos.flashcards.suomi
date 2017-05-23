@@ -21,7 +21,9 @@
 			saveStore();
 		}
 		else {
+			
 			store = JSON.parse(localStorage.getItem(store_key));
+			console.log("loaded store from localstorage", store);
 		}
 		return store;
 	}
@@ -36,6 +38,7 @@
 			$.getJSON("/data/" + deckCode + ".json", function (json) {
 				store.decks[deckCode] = json;
 				saveStore();
+				console.log("saved a new deck into store", store);
 				$.ajaxSetup({ "async": false });
 			});
 		} else {
@@ -47,8 +50,8 @@
 	function flipToBack(): void {
 
 		// Couldnt pass options to callback in flip, 
-		$('.answer-button').css('opacity', '0.0'); 
-				
+		$('.answer-button').css('opacity', '0.0');
+
 		// var flip = $("#card").data("flip-model");
 		// // e.g. to see currect flip state
 		// flip.isFlipped;
@@ -57,11 +60,11 @@
 	}
 
 
-	function ensureAnswerButtonsVisible() : void {
+	function ensureAnswerButtonsVisible(): void {
 		// make the answer buttons show now... they are misbehaving
 		$('.answer-button').css('opacity', '1.0');  // visible maximum
 	}
-	
+
 
 	$(document).on('click', '.answer-button', function () {
 		let chosenAnswerId = $(this).data("answer-card-id");
@@ -102,22 +105,31 @@
 	function chooseAnswer(selectedCardId: number): boolean {
 
 		// Because we deserialized store from JSON some properties might not be set correctly
-		if (!!(store.decks[store.activeDeckCode].cards[store.activeCardIndex].score) == false) {
-			store.decks[store.activeDeckCode].cards[store.activeCardIndex].score = 0;
+		if (!!(store.decks[store.activeDeckCode].cards[store.activeCardIndex].r) == false) {
+			store.decks[store.activeDeckCode].cards[store.activeCardIndex].r = 0;
+		}
+		if (!!(store.decks[store.activeDeckCode].cards[store.activeCardIndex].w) == false) {
+			store.decks[store.activeDeckCode].cards[store.activeCardIndex].w = 0;
 		}
 
-		let scoreIncrement: number = 0;
 		let isCorrectAnswer: boolean = validateAnswer(selectedCardId);
 		if (isCorrectAnswer) {
-			scoreIncrement = 1;
+			store.decks[store.activeDeckCode].cards[store.activeCardIndex].r += 1;
 		}
 		else {
-			scoreIncrement = -1;
+			store.decks[store.activeDeckCode].cards[store.activeCardIndex].w += 1;
 		}
-
-		store.decks[store.activeDeckCode].cards[store.activeCardIndex].score += scoreIncrement;
+		
 		saveStore();
-		console.log("Updated the score to  ", store.decks[store.activeDeckCode].cards[store.activeCardIndex].score);
+		
+		console.log("Updated the score to  ", 
+			store.decks[store.activeDeckCode].cards[store.activeCardIndex].r,
+			store.decks[store.activeDeckCode].cards[store.activeCardIndex].w,
+			store.decks[store.activeDeckCode].cards[store.activeCardIndex].r / (
+				store.decks[store.activeDeckCode].cards[store.activeCardIndex].r + 
+				store.decks[store.activeDeckCode].cards[store.activeCardIndex].w
+			)
+		);
 
 		return isCorrectAnswer;
 	}
@@ -145,8 +157,6 @@
 	}
 
 
-	
-
 	$("#btn-scoreboard").on('click', function () {
 
 		navToScoreboard();
@@ -168,7 +178,7 @@
 	$("#card").flip({
 		trigger: 'manual'
 	});
- 
+
 
 	$("#toggle-flashcard").click(function () {
 		flipToBack();
@@ -181,25 +191,45 @@
 	}
 
 
-$(document).on('pagebeforeshow', "#page-scoreboard", function() {
-	let myTemplatevalue : string = "dale replace this";
-	let scoresList = $("#list-card-scores");
-	scoresList.empty();
-	scoresList.append(` 
-	<li> 
-		<a href="#"> 
-			<h2>${myTemplatevalue}</h2> 
-			<p>
-				Right: <br/>
-				Wrong: 
-			</p>
-			<p>Broken Bells</p>
-		</a>
-		<a href="#" data-rel="popup">reset score</a>
-	</li>
-	`);
-	scoresList.listview('refresh');
-});
+	function calculateAccuracy(right : number, wrong : number) : number {
+		console.log("right:" + !!right, right);
+		console.log("wrong:" + !!wrong, wrong);
+		let x = (!!right) ? right : 0;
+		let y = (!!wrong) ? wrong : 0;
+		console.log("i have x and y", x, y);
+		//if (!!right == false || !!wrong == false) return 0;
+		if (x == 0 && y == 0) return 0;
+		return Math.floor((right / (right + wrong)) * 100);
+	}
+
+
+	$(document).on('pagebeforeshow', "#page-scoreboard", function () {
+
+		let activeDeck = getActiveDeck();
+		$("#hd-scoreboard-deckname").text(activeDeck.title);
+
+		let myTemplatevalue: string = "dale replace this";
+		let scoresList = $("#list-card-scores");
+		scoresList.empty();
+		for (let card of activeDeck.cards) {
+			console.log(card); // , "string", false  
+
+			let accuracy = calculateAccuracy(card.r, card.w);
+
+			scoresList.append(` 
+				<li> 
+					<a href="#"> 
+						<h2>${card.f} || ${card.b}</h2> 
+						Accuracy: ${accuracy}%
+					</a>
+					<a href="#" data-rel="popup">reset score</a>
+				</li>
+			`);
+		}
+
+
+		scoresList.listview('refresh');
+	});
 
 	$(document).on('pagebeforeshow', '#page-deck', function () {
 
@@ -249,7 +279,7 @@ $(document).on('pagebeforeshow', "#page-scoreboard", function() {
 		let currentCard = activeDeck.cards[currentCardIndex];
 		store.activeCardIndex = currentCardIndex;
 		$("#frontText").text(currentCard.f);
-		$("#backText").text(currentCard.f); 
+		$("#backText").text(currentCard.f);
 	}
 
 
