@@ -10,21 +10,22 @@
 </head>
 
 <body>
-	<div data-role="page" id="page-home">
-		<div data-role="header">
-			<div data-role="header" data-position="fixed">
-				<h3>Simple Suomi</h3>
-				<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
-				<a href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>
-			</div>
-		</div>
 
-		<div role="main" class="ui-content jqm-content jqm-fullwidth" <h3 class="ui-bar ui-bar-a ui-corner-all">Simple Suomi Flashcards</h3>
-			[blah blah blah, ]show most populor OR logged in user's latest / favs - show resume]
+	<div data-role="page" id="page-home">
+		<div data-role="header" data-position="fixed">
+			<h3>Simple Suomi</h3>
+			<!--<a href="#add-form" data-transition="flip" data-icon="gear" data-iconpos="notext">Add</a>-->
+			<!--<a href="#page-scoreboard" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>-->
+		</div>
+		<div role="main" class="ui-content">
+			<h5 class="ui-bar ui-bar-a">Welcome to Simple Suomi Flashcards!</h5>
+			<p>
+				Dive into a deck and get learning Finnish for free now!
+			</p>
 			<h4 class="ui-bar ui-bar-a">Most Popular</h4>
 			<ul data-role="listview" data-inset="true">
-				<li><a class="select-deck" data-deck-code="deck_top_100_verbs">Top 100 Finnish Words</a></li>
-				<li><a class="select-deck" data-deck-code="deck_top_100_words">Top 50 Holiday Phrases</a></li>
+				<li><a class="select-deck" data-deck-code="deck_top_100_verbs">Top 100 Verbs</a></li>
+				<li><a class="select-deck" data-deck-code="deck_top_100_words">Top 100 Words</a></li>
 				<!--<li><a class="select-deck" >Top 50 Verbs</a></li>
 				<li><a class="select-deck" >Opposites Attract</a></li>-->
 			</ul>
@@ -33,205 +34,111 @@
 			<!--<div data-demo-html="#panel-fixed-page1"></div>-->
 		</div>
 		<div data-role="footer" data-position="fixed">
-			<h4>homepage footer</h4>
+			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
 		</div>
 	</div>
 
+	<!--
 	<div data-role="page" id="page-contact">
 		<div data-role="header" data-position="fixed">
 			<h1>Contact Simple Suomi</h1>
 			- contact form to submit feedback
 		</div>
 		<div role="main" class="ui-content">...</div>
-		div data-role="footer" data-position="fixed">
-		<h4>contact footer</h4>
-	</div>
+		<div data-role="footer" data-position="fixed">
+			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
+		</div>
+	</div>-->
 
 
 	<div data-role="page" id="page-deck">
 		<div data-role="header" data-position="fixed">
-			<h3>Deck: [deck name]]</h3>
-			<a href="#page-home" data-icon="home" data-iconpos="notext">Home</a>
-			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+			<h3 id="page-deck-header">[deck name]]</h3>
+			<!--
+			<a href="#nav-panel" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>-->
+			<a href="#page-home" data-transition="flip" data-icon="home" data-iconpos="notext">Home</a>
+			<a href="#page-scoreboard" data-transition="flip" data-icon="edit" data-iconpos="notext">Scoreboard</a>
 		</div>
 		<div role="main" class="ui-content">
 			<div class="ui-body ui-body-a ui-corner-all ">
-				<div id="flashcard" class="flip">
-					<div class="front">
-						<p class="iayos-center">
-							<span id="frontText"></span>
-						</p>
-						<hr/>
-						<br/>
+				<div id="card" class="flip">
+					<div class="front absolute-center">
+						<div class="card-content">
+							<br />
+							<br />
+							<br />
+							<b><span id="frontText">[front word goes here]</span></b>
+							<hr />
+							<br />
+							<br />
+							<br />
+						</div>
 					</div>
-					<div class="back">
-						<p class="iayos-center">
-							<span id="backText"></span>
-						</p>
-						<hr/>
-						<p class="iayos-center">
-							<button id="answer1" class="answer-button" value=""></button>
-						</p>
-						<p class="iayos-center">
-							<button id="answer2" class="answer-button" value=""></button>
-						</p>
-						<p class="iayos-center">
-							<button id="answer3" class="answer-button" value=""></button>
-						</p>
+					<div class="back absolute-center">
+						<div class="card-content">
+							<p class="iayos-center">
+								<b><span id="backText">[front word goes here]</span></b>
+							</p>
+							<hr/>
+							<p class="iayos-center">
+								<button id="answer1" class="answer-button" value=""></button>
+							</p>
+							<p class="iayos-center">
+								<button id="answer2" class="answer-button" value=""></button>
+							</p>
+							<p class="iayos-center">
+								<button id="answer3" class="answer-button" value=""></button>
+							</p>
+						</div>
 					</div>
 				</div>
+				<!-- put an advert in here? -->
+				<input id="toggle-flashcard" type="button" value="FLIP">
+				<!--<button id="btn-read" class="button" value="READ TO ME">READ TO ME</button>-->
 			</div>
-			<input id="toggle-flashcard" type="button" value="FLIP">
-			<input type="button" value="READ TO ME">
 		</div>
 		<div data-role="footer" data-position="fixed">
-			<h4>deck footer</h4>
+			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
 		</div>
 	</div>
-
 
 	<div data-role="page" id="page-scoreboard">
 		<div data-role="header" data-position="fixed">
-			<h1>Your Score</h1>
+			<h3>Scoreboard</h3>
+			<a href="#page-home" data-transition="flip" data-icon="home" data-iconpos="notext">Home</a>
+			<a href="#page-deck" data-transition="flip" data-icon="back" data-iconpos="notext">Back to Deck</a>
 		</div>
-		<div role="main" class="ui-content">...</div>
-		div data-role="footer" data-position="fixed">
-		<h4>contact footer</h4>
+		<div role="main" class="ui-content">
+			<div class="ui-body ui-body-a ui-corner-all ">
+				<h4 id="hd-scoreboard-deckname" class="ui-bar ui-bar-a">[Deckname]</h4>
+				<p>
+					View your score for each card in the deck. To learn a card again, reset the score - it will appear more often!
+				</p>
+				<table class="ui-table" id="table-scoreboard" border="0">
+					<thead>
+						<tr>
+							<th data-priority="1">Card</th>
+							<th data-priority="2" rowspan="2" class="center" style="width: 10%">Accuracy</th>
+							<th data-priority="3" rowspan="2" class="center" style="width: 10%">Reset</th>
+						</tr>
+					</thead>
+					<tbody id="tbody-cardscores">
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
+		</div>
 	</div>
+
+
 
 	<script src="js/jquery-2.1.4/jquery-2.1.4.min.js"></script>
 	<script src="js/jquery.flip/jquery.flip.min.js"></script>
 	<script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="dist/model.js"></script>
 	<script src="dist/script.js"></script>
 </body>
 
 </html>
-
-<!--<div data-role="page" id="page-login">
-		<div data-role="header">
-			<h1>Create Account or Login</h1>
-			blah blah blah
-		</div>
-		<div role="main" class="ui-content">...</div>
-		<div data-role="footer" data-position="fixed">footer</div>
-	</div>-->
-
-<!--<div data-role="page" id="page-about">
-		<div data-role="header" data-position="fixed">
-			<h3>About Simple Suomi</h3>
-			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
-			<a href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>
-		</div>
-		<div role="main" class="ui-content">
-			<h2>About Simple Suomi</h2>
-			- donate - who we are - privacy
-		</div>
-		<div data-role="footer" data-position="fixed">
-			<h4>privacy footer</h4>
-		</div>
-	</div>-->
-
-<!--
-		<div data-role="panel" data-position-fixed="true" data-display="push" data-theme="a" id="nav-panel">
-
-			<ul data-role="listview">
-
-				<li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
-
-				<li><a href="#panel-fixed-page2">Deck 1</a></li>
-
-				<li><a href="#panel-fixed-page2">Deck 2</a></li>
-
-				<li><a href="#panel-fixed-page2">Deck 3</a></li>
-
-				<li><a href="#panel-fixed-page2">Text inputs & textarea</a></li>
-
-				<li><a href="#panel-fixed-page2">Transitions</a></li>
-			</ul>
-		</div>
-		-->
-<!-- /panel -->
-<!--
-		<div data-role="panel" data-position="right" data-position-fixed="true" data-display="overlay" data-theme="a" id="add-form">
-
-			<form class="userform">
-
-				<h2>Login</h2>
-				<label for="name">Username:</label>
-				<input type="text" name="name" id="name" value="" data-clear-btn="true" data-mini="true">
-				<label for="password">Password:</label>
-				<input type="password" name="password" id="password" value="" data-clear-btn="true" autocomplete="off" data-mini="true">
-				<div class="ui-grid-a">
-
-					<div class="ui-block-a"><a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-b ui-mini">Cancel</a></div>
-
-					<div class="ui-block-b"><a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-mini">Save</a></div>
-				</div>
-			</form>
-		</div>
-
-
-		<div data-role="page" id="page-search-decks">
-		<div data-role="header" data-position="fixed"></div>
-		<div data-role="main" class="ui-content">
-			<form>
-				<input data-type="search" id="searchForCollapsibleSetChildren">
-			</form>
-
-			<div data-role="collapsibleset" data-filter="true" data-children="> div, > div div ul li" data-inset="true" id="collapsiblesetForFilterChildren"
-			 data-input="#searchForCollapsibleSetChildren">
-
-				<div data-role="collapsible" data-filtertext="Animals Cats Dogs Lizards snakes">
-
-					<h3>Animals</h3>
-
-					<ul data-role="listview" data-inset="false">
-
-						<li data-filtertext="Animals Cats">Cats</li>
-
-						<li data-filtertext="Animals Dogs">Dogs</li>
-
-						<li data-filtertext="Animals Lizards">Lizards</li>
-
-						<li data-filtertext="Animals Snakes">Snakes</li>
-					</ul>
-				</div>
-
-				<div data-role="collapsible" data-filtertext="Cars Acura Audi BMW Cadillac">
-
-					<h3>Cars</h3>
-
-					<ul data-role="listview" data-inset="false">
-
-						<li data-filtertext="Cars Acura">Acura</li>
-
-						<li data-filtertext="Cars Audi">Audi</li>
-
-						<li data-filtertext="Cars BMW">BMW</li>
-
-						<li data-filtertext="Cars Cadillac">Cadillac</li>
-					</ul>
-				</div>
-
-				<div data-role="collapsible" data-filtertext="Planets Earth Jupiter Mars Mercury">
-
-					<h3>Planets</h3>
-
-					<ul data-role="listview" data-inset="false">
-
-						<li data-filtertext="Planets Acura">Earth</li>
-
-						<li data-filtertext="Planets Jupiter">Jupiter</li>
-
-						<li data-filtertext="Planets Mars">Mars</li>
-
-						<li data-filtertext="Planets Mercury">Mercury</li>
-					</ul>
-				</div>
-			</div>
-
-		</div>
-		<div data-role="footer" data-position="fixed"></div>
-	</div>
-
-		-->

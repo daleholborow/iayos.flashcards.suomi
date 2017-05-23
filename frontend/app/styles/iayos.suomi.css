@@ -1,3 +1,22 @@
+html,
+body,
+#page-home {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#page-home,
+#page-home * {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+#page-home .ui-content {
+  height: inherit; /* inherit height without padding nor border */
+}
+
 
 .iayos-center{
   text-align: center;
@@ -7,6 +26,19 @@
   margin: 0 auto;
 }
 
+.front, .back, .other-front, .other-back {
+    border: 1px  
+;
+ /*//   padding: 10px;*/
+}
+
+.front, .other-front {
+    background-color: #e6ebf4 ;
+}
+
+.back, .other-back {
+    background-color: #f9f9f9 ;
+}
 
 .flip .front {
     /*background: #2184cd;
@@ -20,17 +52,55 @@
     text-align: center;
 }
 
-/*
-
-.flip {
-    height: 199px;
-    width: 300px;
-    margin: 0 auto;
+.card-content {
+    /*border: 1px solid #000000;*/
+    width: 95%;
 }
 
-.flip img {
-    width: 300px;
-    height: auto;
+
+/* vertical center? https://stackoverflow.com/a/19740594/4413476 */
+.absolute-center {
+
+    /* Internet Explorer 10 */
+    display:-ms-flexbox;
+    -ms-flex-pack:center;
+    -ms-flex-align:center;
+
+    /* Firefox */
+    display:-moz-box;
+    -moz-box-pack:center;
+    -moz-box-align:center;
+
+    /* Safari, Opera, and Chrome */
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+
+    /* W3C */
+    display:box;
+    box-pack:center;
+    box-align:center;
 }
 
-*/
+.answer-button {
+    /*display: none;*/
+    /*visibility: hidden;*/
+}
+
+
+th {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+tr:nth-child(odd) {
+    /*background: #e9e9e9;*/
+    border-top: 1px solid #d6d6d6;
+}
+
+/*tr {
+    border-bottom: 1px solid #d6d6d6;
+}*/
+
+.center {
+    text-align: center;
+}
