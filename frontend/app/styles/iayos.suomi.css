@@ -44,15 +44,6 @@ body,
     /*background: #2184cd;
     color: red;*/
     text-align: center;
-
-    /*backface-visibility: hidden;
-    transform-style: preserve-3d; 
-    position: absolute; 
-    z-index: 1; 
-    height: 100%; 
-    width: 100%; 
-    transition: all 0.5s ease-out; 
-    transform: rotateY(0deg);*/
 }
 
 .flip .back {
@@ -61,17 +52,32 @@ body,
     text-align: center;
 }
 
-/*
-
-.flip {
-    height: 199px;
-    width: 300px;
-    margin: 0 auto;
+.card-content {
+    /*border: 1px solid #000000;*/
+    width: 95%;
 }
 
-.flip img {
-    width: 300px;
-    height: auto;
-}
 
-*/
+/* vertical center? https://stackoverflow.com/a/19740594/4413476 */
+.absolute-center {
+
+    /* Internet Explorer 10 */
+    display:-ms-flexbox;
+    -ms-flex-pack:center;
+    -ms-flex-align:center;
+
+    /* Firefox */
+    display:-moz-box;
+    -moz-box-pack:center;
+    -moz-box-align:center;
+
+    /* Safari, Opera, and Chrome */
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+
+    /* W3C */
+    display:box;
+    box-pack:center;
+    box-align:center;
+}

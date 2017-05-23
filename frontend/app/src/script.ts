@@ -162,7 +162,7 @@
 	$("#card").flip({
 		trigger: 'manual'
 	});
-
+ 
 
 	$("#toggle-flashcard").click(function () {
 		flipToBack();
