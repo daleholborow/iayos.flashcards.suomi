@@ -24,8 +24,7 @@
     - cd frontend    
     - npm install -g gulp --skip-installed
     - npm install --skip-installed
-    - cd ..
-    - cd ..    
+    - cd ..  
  
  # Post-install test scripts.
   test_script:
