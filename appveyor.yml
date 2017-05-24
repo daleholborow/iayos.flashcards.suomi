@@ -15,8 +15,19 @@
   # Install scripts. (runs after repo cloning)
   install:
     - git remote set-url origin https://github.com/daleholborow/iayos.flashcards.suomi.git
-    
-  # Post-install test scripts.
+    # Get the latest stable version of Node.js or io.js
+    - ps: Install-Product node ''
+    #- npm -g install npm@2
+    - set PATH=%APPDATA%\npm;%PATH%;
+    # Install global modules
+    #- npm install -g gulp --skip-installed          # Gulp so we can perform build-time gulp calls to MSBuild task. Skip installation if already in cache
+    - cd frontend    
+    - npm install -g gulp --skip-installed
+    - npm install --skip-installed
+    - cd ..
+    - cd ..    
+ 
+ # Post-install test scripts.
   test_script:
     # Output useful info for debugging.
     - node --version
