@@ -98,9 +98,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)..\..\frontend\app\*.*" /s/a/y "$(ProjectDir)"</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -108,11 +105,38 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <!--
+	  XCopy (to get both files AND folders) all the UI artifacts recursively, while NOT prompting for confirmation for file overwrites
+	  See: https://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/xcopy.mspx?mfr=true
+	  -->
+<!--
   <PropertyGroup>
-    <!--
-	XCopy (to get both files AND folders) all the UI artifacts recursively, while NOT prompting for confirmation for file overwrites
-	See: https://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/xcopy.mspx?mfr=true
-	-->
     <PostBuildEvent>xcopy "$(ProjectDir)..\..\frontend\app\*.*" /s/a/y "$(ProjectDir)"</PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>
+  <Target Name="CustomCollectFiles">
+    <ItemGroup>
+      <_CustomFiles Include="$(SolutionDir)WebJob\bin\$(ConfigurationName)\**\*" />
+      <FilesForPackagingFromProject  Include="%(_CustomFiles.Identity)">
+        <DestinationRelativePath>App_Data\jobs\continuous\MyJob\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
+-->
+
+  <Target Name="BeforeBuild">
+    <ItemGroup>
+      <Content Include="..\..\frontend\app\**\*" />
+    </ItemGroup>
+  </Target>
 </Project>
