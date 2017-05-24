@@ -53,7 +53,7 @@
   before_build:
     # Run Gulp build on frontend site.
     - cd frontend
-    - typings
+    - typings install
     - gulp build
     - cd ..
     - cd ..
@@ -61,7 +61,7 @@
     # Restore NuGet packages.
     # Because NuGet has such sporadically poor connectivity, for retries see: http://www.appveyor.com/docs/nuget#restore-with-retries 
     #- appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/v3.2.0-rc/nuget.exe    
-    - nuget-restore.cmd backend\iayos.flashcards.suomi.sln
+    #- nuget-restore.cmd backend\iayos.flashcards.suomi.sln
 
   build:
     project: backend\iayos.flashcards.suomi.sln
