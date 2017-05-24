@@ -75,7 +75,7 @@
   artifacts:
     - path: frontend\app\
       name: final-app
-	
+
   deploy:
     -
       provider: Environment
