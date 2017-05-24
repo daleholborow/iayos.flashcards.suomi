@@ -1,0 +1,63 @@
+# configuration for "develop" branch (ie TESTING environment), a rolling stream of development as developers merge in their sprint features 
+
+#========================================================================
+# build and deployment of TESTING configuration
+#========================================================================
+-
+  os: Visual Studio 2015
+  
+  init:
+    - git config --global core.autocrlf true
+  
+  environment:
+    Environment: Debug
+
+  # Install scripts. (runs after repo cloning)
+  install:
+    - git remote set-url origin https://github.com/daleholborow/iayos.flashcards.suomi.git
+    
+  # Post-install test scripts.
+  test_script:
+    # Output useful info for debugging.
+    - node --version
+    - npm --version
+    ## run tests
+    #- npm test
+  
+  nuget:
+    account_feed: true  
+  
+  branches:
+    only:
+      - develop
+      - /feature-.*/
+      #- /Feature.*/      # You can use Regex expression to match multiple branch name(s)
+
+  configuration: Debug
+  
+  platform: Any CPU
+
+  # Retain NuGet, Bower & NPM package caches between builds.  
+  cache:
+
+  before_build:
+    # Run Gulp build on frontend site.
+    - cd frontend
+    - gulp 
+    - cd ..
+    - cd ..
+  
+  build:
+    project: backend\iayos.flashcards.suomi.sln
+    publish_wap: true
+    publish_nuget: true
+    publish_nuget_symbols: true
+    include_nuget_references: true
+    # quiet|minimal|normal|detailed
+    verbosity: quiet
+  
+  deploy:
+    -
+      provider: Environment
+      name: iayos.flashcards.suomi
+
