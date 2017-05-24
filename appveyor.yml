@@ -40,7 +40,8 @@
   branches:
     only:
       - develop
-      - /feature.*/
+      - master
+      #- /feature.*/
       #- /Feature.*/      # You can use Regex expression to match multiple branch name(s)
 
   configuration: Debug
