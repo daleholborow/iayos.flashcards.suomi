@@ -60,6 +60,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -109,7 +110,7 @@
 	  XCopy (to get both files AND folders) all the UI artifacts recursively, while NOT prompting for confirmation for file overwrites
 	  See: https://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/xcopy.mspx?mfr=true
 	  -->
-<!--
+  <!--
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)..\..\frontend\app\*.*" /s/a/y "$(ProjectDir)"</PostBuildEvent>
   </PropertyGroup>
@@ -133,33 +134,27 @@
     </ItemGroup>
   </Target>
 -->
-
-<!--  <Target Name="BeforeBuild">-->
-<!--    <ItemGroup>-->
-<!--      <Content Include="..\..\frontend\app\**\*" />-->
-<!--    </ItemGroup>-->
-<!--  </Target>-->
-
+  <!--  <Target Name="BeforeBuild">-->
+  <!--    <ItemGroup>-->
+  <!--      <Content Include="..\..\frontend\app\**\*" />-->
+  <!--    </ItemGroup>-->
+  <!--  </Target>-->
   <PropertyGroup>
     <CopyAllFilesToSingleFolderForPackageDependsOn>
       CustomCollectFiles;
       $(CopyAllFilesToSingleFolderForPackageDependsOn);
     </CopyAllFilesToSingleFolderForPackageDependsOn>
-
     <CopyAllFilesToSingleFolderForMsdeployDependsOn>
       CustomCollectFiles;
       $(CopyAllFilesToSingleFolderForMsdeployDependsOn);
     </CopyAllFilesToSingleFolderForMsdeployDependsOn>
   </PropertyGroup>
-
   <Target Name="CustomCollectFiles">
     <ItemGroup>
       <_CustomFiles Include="..\..\frontend\app\**\*" />
-
-      <FilesForPackagingFromProject  Include="%(_CustomFiles.Identity)">
-        <DestinationRelativePath>Extra Files\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      <FilesForPackagingFromProject Include="%(_CustomFiles.Identity)">
+        <DestinationRelativePath>%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
     </ItemGroup>
   </Target>
-  
 </Project>
