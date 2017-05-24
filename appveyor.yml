@@ -56,7 +56,7 @@
     - typings install
     - gulp build
     - cd ..
-    - cd ..
+    #- cd ..
 
     # Restore NuGet packages.
     # Because NuGet has such sporadically poor connectivity, for retries see: http://www.appveyor.com/docs/nuget#restore-with-retries 
@@ -71,7 +71,11 @@
     include_nuget_references: true
     # quiet|minimal|normal|detailed
     verbosity: quiet
-  
+
+  artifacts:
+    - path: frontend\app\
+      name: final-app
+	
   deploy:
     -
       provider: Environment
