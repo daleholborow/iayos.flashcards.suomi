@@ -11,14 +11,14 @@
 
 <body>
 
-	<div data-role="page" id="page-home">
+	<div data-role="page" id="page-home" data-title="Simple Suomi">
 		<div data-role="header" data-position="fixed">
 			<h3>Simple Suomi</h3>
 			<!--<a href="#add-form" data-transition="flip" data-icon="gear" data-iconpos="notext">Add</a>-->
 			<!--<a href="#page-scoreboard" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>-->
 		</div>
 		<div role="main" class="ui-content">
-			<h5 class="ui-bar ui-bar-a">Welcome to Simple Suomi Flashcards!</h5>
+			<h5 class="center ui-bar ui-bar-a">Welcome to Simple Suomi Flashcards!</h5>
 			<p>
 				Dive into a deck and get learning Finnish for free now!
 			</p>
@@ -39,7 +39,7 @@
 	</div>
 
 	<!--
-	<div data-role="page" id="page-contact">
+	<div data-role="page" id="page-contact" data-title="Simple Suomi">
 		<div data-role="header" data-position="fixed">
 			<h1>Contact Simple Suomi</h1>
 			- contact form to submit feedback
@@ -51,9 +51,9 @@
 	</div>-->
 
 
-	<div data-role="page" id="page-deck">
+	<div data-role="page" id="page-deck" data-title="Simple Suomi">
 		<div data-role="header" data-position="fixed">
-			<h3 id="page-deck-header">[deck name]]</h3>
+			<h3 id="page-deck-header">Simple Suomi</h3>
 			<!--
 			<a href="#nav-panel" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>-->
 			<a href="#page-home" data-transition="flip" data-icon="home" data-iconpos="notext">Home</a>
@@ -102,7 +102,7 @@
 		</div>
 	</div>
 
-	<div data-role="page" id="page-scoreboard">
+	<div data-role="page" id="page-scoreboard" data-title="Simple Suomi">
 		<div data-role="header" data-position="fixed">
 			<h3>Scoreboard</h3>
 			<a href="#page-home" data-transition="flip" data-icon="home" data-iconpos="notext">Home</a>
@@ -110,7 +110,7 @@
 		</div>
 		<div role="main" class="ui-content">
 			<div class="ui-body ui-body-a ui-corner-all ">
-				<h4 id="hd-scoreboard-deckname" class="ui-bar ui-bar-a">[Deckname]</h4>
+				<h4 id="hd-scoreboard-deckname" class="center ui-bar ui-bar-a">[Deckname]</h4>
 				<p>
 					View your score for each card in the deck. To learn a card again, reset the score - it will appear more often!
 				</p>
@@ -124,6 +124,9 @@
 					</thead>
 					<tbody id="tbody-cardscores">
 					</tbody>
+					<div data-role="popup" id="page-confirm-qn-reset">
+						<p>This is a completely basic popup, no options set.</p>
+					</div>
 				</table>
 			</div>
 		</div>
