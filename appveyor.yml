@@ -22,7 +22,7 @@
     # Install global modules
     #- npm install -g gulp --skip-installed          # Gulp so we can perform build-time gulp calls to MSBuild task. Skip installation if already in cache
     - cd frontend    
-    - npm install -g gulp --skip-installed
+    - npm install -g gulp typings --skip-installed
     - npm install --skip-installed
     - cd ..  
  
