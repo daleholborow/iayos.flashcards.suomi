@@ -48,7 +48,7 @@
   platform: Any CPU
 
   # Retain NuGet, Bower & NPM package caches between builds.  
-  cache:
+  #cache:
 
   before_build:
     # Run Gulp build on frontend site.
