@@ -53,7 +53,7 @@
   before_build:
     # Run Gulp build on frontend site.
     - cd frontend
-    - gulp 
+    - gulp build
     - cd ..
     - cd ..
   
