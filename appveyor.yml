@@ -43,18 +43,18 @@
 
   configuration: Debug
   
-  platform: Any CPU
+  #platform: Any CPU
 
   # Retain NuGet, Bower & NPM package caches between builds.  
   #cache:
 
-  before_build:
-    # Run Gulp build on frontend site.
-    - cd frontend
-    - typings install
-    - gulp build
-    - cd ..
-    #- cd ..
+  #before_build:
+  #  # Run Gulp build on frontend site.
+  #  - cd frontend
+  #  - typings install
+  #  - gulp build
+  #  - cd ..
+  #  #- cd ..
 
     # Restore NuGet packages.
     # Because NuGet has such sporadically poor connectivity, for retries see: http://www.appveyor.com/docs/nuget#restore-with-retries 
@@ -72,7 +72,11 @@
 
   # We are NOT building a VS solution, so try to switch to build_script mode
   build_script:
-    #
+    # Run Gulp build on frontend site.
+    - cd frontend
+    - typings install
+    - gulp build
+    - cd ..
     
   artifacts:
     - path: frontend\app\
