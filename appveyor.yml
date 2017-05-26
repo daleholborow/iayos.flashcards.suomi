@@ -47,28 +47,11 @@
 
   # Retain NuGet, Bower & NPM package caches between builds.  
   #cache:
+    - '%LocalAppData%\bower\cache\packages'		# Preserve Bower packages (note LOCAL not ROAMING location)
+    - '%APPDATA%\npm-cache'
+    - frontend\node_modules -> C:\projects\iayos.flashcards.simplesuomi\frontend\package.json
+    - frontend\typings -> C:\projects\iayos.flashcards.simplesuomi\frontend\typings.json
 
-  #before_build:
-  #  # Run Gulp build on frontend site.
-  #  - cd frontend
-  #  - typings install
-  #  - gulp build
-  #  - cd ..
-  #  #- cd ..
-
-    # Restore NuGet packages.
-    # Because NuGet has such sporadically poor connectivity, for retries see: http://www.appveyor.com/docs/nuget#restore-with-retries 
-    #- appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/v3.2.0-rc/nuget.exe    
-    #- nuget-restore.cmd backend\iayos.flashcards.suomi.sln
-
-  #build:
-  #  project: backend\iayos.flashcards.suomi.sln
-  #  publish_wap: true
-  #  publish_nuget: true
-  #  publish_nuget_symbols: true
-  #  include_nuget_references: true
-  #  # quiet|minimal|normal|detailed
-  #  verbosity: quiet
 
   # We are NOT building a VS solution, so try to switch to build_script mode
   build_script:
