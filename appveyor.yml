@@ -15,26 +15,13 @@
     - git remote set-url origin https://github.com/daleholborow/iayos.flashcards.suomi.git
     # Get the latest stable version of Node.js or io.js
     - ps: Install-Product node ''
-    #- npm -g install npm@2
     - set PATH=%APPDATA%\npm;%PATH%;
     # Install global modules
-    #- npm install -g gulp --skip-installed          # Gulp so we can perform build-time gulp calls to MSBuild task. Skip installation if already in cache
     - cd frontend    
     - npm install -g gulp typings --skip-installed
     - npm install --skip-installed
     - cd ..  
  
- # Post-install test scripts.
-  test_script:
-    # Output useful info for debugging.
-    - node --version
-    - npm --version
-    ## run tests
-    #- npm test
-  
-#  nuget:
-#    account_feed: true  
-  
   branches:
     only:
       - develop
@@ -43,8 +30,6 @@
 
   configuration: Debug
   
-  #platform: Any CPU
-
   # Retain NuGet, Bower & NPM package caches between builds.  
   cache:
     - '%LocalAppData%\bower\cache\packages'		# Preserve Bower packages (note LOCAL not ROAMING location)
