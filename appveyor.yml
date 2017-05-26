@@ -46,7 +46,7 @@
   #platform: Any CPU
 
   # Retain NuGet, Bower & NPM package caches between builds.  
-  #cache:
+  cache:
     - '%LocalAppData%\bower\cache\packages'		# Preserve Bower packages (note LOCAL not ROAMING location)
     - '%APPDATA%\npm-cache'
     - frontend\node_modules -> C:\projects\iayos.flashcards.simplesuomi\frontend\package.json
