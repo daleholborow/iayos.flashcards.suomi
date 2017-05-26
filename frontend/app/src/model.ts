@@ -4,7 +4,7 @@ module flashcards {
 		f: string = null;	// front
 		b: string = null;  // back
 		r: number = 0;		// how many times has the user answered this correctly
-		w: number = 0;		// hopw many times has the user answered this incorrectly
+		w: number = 0;		// how many times has the user answered this incorrectly
 	}
 
 	export class Deck {

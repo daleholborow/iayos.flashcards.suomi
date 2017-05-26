@@ -281,7 +281,6 @@
 				</tr>
 			`);
 		}
-		
 		// Add the appropriate handler to dynamically added reset buttons
 		$(".clear-card").on('click', function () {
 			let cardId : number = Number($(this).attr("data-card-id"));
