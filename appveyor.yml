@@ -49,8 +49,8 @@
   cache:
     - '%LocalAppData%\bower\cache\packages'		# Preserve Bower packages (note LOCAL not ROAMING location)
     - '%APPDATA%\npm-cache'
-    - frontend\node_modules -> C:\projects\iayos.flashcards.suomi\frontend\package.json
-    - frontend\typings -> C:\projects\iayos.flashcards.suomi\frontend\typings.json
+    - frontend\node_modules -> C:\projects\iayos-flashcards-suomi\frontend\package.json
+    - frontend\typings -> C:\projects\iayos-flashcards-suomi\frontend\typings.json
 
 
   # We are NOT building a VS solution, so try to switch to build_script mode
