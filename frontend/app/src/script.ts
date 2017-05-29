@@ -40,7 +40,7 @@
 	*/
 	function updateSelectedDeck(deckCode: string): void {
 		store.activeDeckCode = deckCode;
-		store.activeCardIndex = 0;
+		store.activeCardId = 0;
 
 		if (!!getActiveDeck() == false) {
 			//console.log("trying to update selected and didnt find in cache");
@@ -82,6 +82,19 @@
 	}
 
 
+	$(document).on('click', '#btn-reset-deck', function() {
+		let index = store.decks.findIndex(d => d.code == store.activeDeckCode);
+		if (index > -1) {
+		   store.decks.splice(index, 1);
+		   store.activeCardId = null;
+		   store.activeDeckCode = null;
+		   saveStore();
+		}
+		$.mobile.pageContainer.pagecontainer("change", "#page-home", {
+			transition: "slidefade", changeHash: false, reload: true, allowSamePageTransition: false
+		});
+	});
+
 	/*
 		
 	*/
@@ -91,7 +104,6 @@
 
 		if (isCorrectAnswer) {
 			// animate a happy thing
-
 			$.mobile.pageContainer.pagecontainer("change", "#page-deck", {
 				transition: "slidefade", changeHash: false, reload: false, allowSamePageTransition: true
 			});
@@ -131,19 +143,20 @@
 
 		let activeDeck = getActiveDeck();
 		// Because we deserialized store from JSON some properties might not be set correctly
-		if (!!(activeDeck.cards[store.activeCardIndex].r) == false) {
-			activeDeck.cards[store.activeCardIndex].r = 0;
+		let activeCard : flashcards.Card = activeDeck.cards.find(x => x.id == store.activeCardId);
+		if (!!(activeCard.r) == false) {
+			activeCard.r = 0;
 		}
-		if (!!(activeDeck.cards[store.activeCardIndex].w) == false) {
-			activeDeck.cards[store.activeCardIndex].w = 0;
+		if (!!(activeCard.w) == false) {
+			activeCard.w = 0;
 		}
 
 		let isCorrectAnswer: boolean = validateAnswer(selectedCardId);
 		if (isCorrectAnswer) {
-			activeDeck.cards[store.activeCardIndex].r += 1;
+			activeCard.r += 1;
 		}
 		else {
-			activeDeck.cards[store.activeCardIndex].w += 1;
+			activeCard.w += 1;
 		}
 
 		saveStore();
@@ -166,7 +179,7 @@
 	*/
 	function validateAnswer(selectedCardId: number): boolean {
 		// get the correct answer
-		let correctCard: flashcards.Card = getActiveDeck().cards[store.activeCardIndex];
+		let correctCard: flashcards.Card = getActiveDeck().cards.find(x => x.id == store.activeCardId);
 		let isCorrectAnswer: boolean = (correctCard.id === selectedCardId);
 		return isCorrectAnswer;
 	}
@@ -328,35 +341,50 @@
 		var flip = $("#card").data("flip-model");
 		$("#card").flip(false);
 
+		// sometimes show the front, sometimes show the back
+		let isInFrontMode : boolean = Math.random() >= 0.5;
+		console.log("isInFrontMode:" + isInFrontMode);
+
 		let activeDeck = getActiveDeck();
 		let usedCardIndices: number[] = [];
 
 		let randomCardIndex = getRandomCardIndex(usedCardIndices);
 		usedCardIndices.push(randomCardIndex);
-		let card = activeDeck.cards[randomCardIndex];
-		$("#answer1").html(card.b);
-		$("#answer1").data("answer-card-id", card.id);
+		let card1 = activeDeck.cards[randomCardIndex];
+		$("#answer1").html(getFaceTextByMode(isInFrontMode, card1));
+		$("#answer1").data("answer-card-id", card1.id);
 
 		randomCardIndex = getRandomCardIndex(usedCardIndices);
 		usedCardIndices.push(randomCardIndex);
-		card = activeDeck.cards[randomCardIndex];
-		$("#answer2").html(card.b);
-		$("#answer2").data("answer-card-id", card.id);
+		let card2 = activeDeck.cards[randomCardIndex];
+		$("#answer2").html(getFaceTextByMode(isInFrontMode, card2));
+		$("#answer2").data("answer-card-id", card2.id);
 
 		randomCardIndex = getRandomCardIndex(usedCardIndices);
 		usedCardIndices.push(randomCardIndex);
-		card = activeDeck.cards[randomCardIndex];
-		$("#answer3").html(card.b);
-		$("#answer3").data("answer-card-id", card.id);
+		let card3 = activeDeck.cards[randomCardIndex];
+		$("#answer3").html(getFaceTextByMode(isInFrontMode, card3));
+		$("#answer3").data("answer-card-id", card3.id);
 
 		// which one to use as the front?
 		let currentCardIndex = usedCardIndices[Math.floor(Math.random() * usedCardIndices.length)];
+		console.log("current card index is" + currentCardIndex);
 		let currentCard = activeDeck.cards[currentCardIndex];
-		store.activeCardIndex = currentCardIndex;
-		$("#frontText").text(currentCard.f);
-		$("#backText").text(currentCard.f);
+		store.activeCardId = currentCard.id;
+		$("#frontText").text(getFaceTextByMode(!isInFrontMode, currentCard));
+		$("#backText").text(getFaceTextByMode(!isInFrontMode, currentCard));
 	}
 
+
+	/*
+	We want to be able to randomly shuffly which mode the cards are shown in (ie. randomly show front OR back)
+	*/
+	function getFaceTextByMode(isInFrontMode : boolean, card : flashcards.Card) : string {
+		if (isInFrontMode) {
+			return card.f;
+		}
+		return card.b;
+	}
 
 	/*
 		

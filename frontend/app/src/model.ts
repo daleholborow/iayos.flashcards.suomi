@@ -1,4 +1,5 @@
 module flashcards {
+
 	export class Card {
 		id: number = -1;
 		f: string = null;	// front
@@ -19,7 +20,7 @@ module flashcards {
 
 		activeDeckCode: string = null;
 
-		activeCardIndex: number = 0;
+		activeCardId: number = 0;
 
 		decks: Deck[] = [];
 
