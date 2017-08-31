@@ -1,5 +1,5 @@
 // Initialize your app
-var myApp = new Framework7({
+let myApp = new Framework7({
 	animateNavBackIcon: true,
 	// Enable templates auto precompilation
 	precompileTemplates: true,
@@ -50,8 +50,8 @@ $$(document).on('pageInit', function (e) {
 
 
 	$(".posts li").hide();
-	size_li = $(".posts li").size();
-	x = 4;
+	let size_li = $(".posts li").size();
+	let x = 4;
 	$('.posts li:lt(' + x + ')').show();
 	$('#loadMore').click(function () {
 		x = (x + 1 <= size_li) ? x + 1 : size_li;
@@ -62,38 +62,7 @@ $$(document).on('pageInit', function (e) {
 		}
 	});
 
-	/* Custom Select  */
-	(function () {
-		[].slice.call(document.querySelectorAll('select.selectoptions')).forEach(function (el) {
-			new SelectFx(el, {
-				stickyPlaceholder: false
-			});
-		});
-	})();
-
-
-	// /* Custom Autocomplete Example  */
-	// var fruits = ('Apple Apricot Avocado Banana Melon Orange Peach Pear Pineapple').split(' ');
-	// var autocompleteDropdownSimple = myApp.autocomplete({
-	// 	input: '#autocomplete-dropdown',
-	// 	openIn: 'dropdown',
-	// 	source: function (autocomplete, query, render) {
-	// 		var results = [];
-	// 		if (query.length === 0) {
-	// 			render(results);
-	// 			return;
-	// 		}
-	// 		// Find matched items
-	// 		for (var i = 0; i < fruits.length; i++) {
-	// 			if (fruits[i].toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(fruits[i]);
-	// 		}
-	// 		// Render items by passing array with result items
-	// 		render(results);
-	// 	}
-	// });
-
-
-
+	
 	$("a.switcher").bind("click", function (e) {
 		e.preventDefault();
 
@@ -167,3 +136,49 @@ $$(document).on('pageInit', function (e) {
 	});
 	
 });
+
+
+
+function ajaxContact(theForm) {
+	var $ = jQuery;
+	$('#loader').fadeIn();
+	var formData = $(theForm).serialize(),
+		note = $('#Note');
+	$.ajax({
+		type: "POST",
+		url: "send.php",
+		data: formData,
+		success: function (response) {
+			if (note.height()) {
+				note.fadeIn('fast', function () { $(this).hide(); });
+			} else {
+				note.hide();
+			}
+			$('#LoadingGraphic').fadeOut('fast', function () {
+				if (response === 'success') {
+
+					$('.page_subtitle').hide();
+
+				}
+				// Message Sent? Show the 'Thank You' message and hide the form
+				var result = '';
+				var c = '';
+				if (response === 'success') {
+					myApp.alert('Thank you for getting in touch.', 'Message sent!');
+					c = 'success';
+				} else {
+					result = response;
+					c = 'error';
+				}
+				note.removeClass('success').removeClass('error').text('');
+				var i = setInterval(function () {
+					if (!note.is(':visible')) {
+						note.html(result).addClass(c).slideDown('fast');
+						clearInterval(i);
+					}
+				}, 40);
+			}); // end loading image fadeOut
+		}
+	});
+	return false;
+}
