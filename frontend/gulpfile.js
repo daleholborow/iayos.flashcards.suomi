@@ -4,6 +4,7 @@ var merge       = require('merge2');
 var tslint      = require('gulp-tslint');
 var browserSync = require('browser-sync').create();
 var reload      = browserSync.reload;
+var exec = require('child_process').exec;
 
 var paths = {
 	browsersync: {
@@ -21,8 +22,20 @@ var paths = {
 	}
 };
 
+
+// To go out to the flascardapi.eladaus.com website and regenerate all our dto .ts definitions
+gulp.task('refresh-flashcardapi', function(cb) {
+    
+ exec("typescript-ref app/src/flashcardapi.dtos.ts", function (err, stdout, stderr) {
+     console.log(stdout);
+     console.log(stderr);
+     cb(err);
+ });
+
+});
+
 // default task
-gulp.task('default', ['lint', 'serve']);
+gulp.task('default', ['lint', 'build', 'serve']);
 
 // static server
 gulp.task('browser-sync', function() {
@@ -54,6 +67,7 @@ gulp.task('styles', function() {
 var tsProject = tsc.createProject('tsconfig.json');
 
 gulp.task('build', ['compile:typescript']);
+
 gulp.task('compile:typescript', function() {
     var tsResult = gulp.src(paths.tscripts.src)
         .pipe(tsProject());
@@ -107,6 +121,7 @@ gulp.task('buildrun', ['build', 'run'], function() {
 
 // static server + watching css/html files
 gulp.task('test', ['serve']);
+
 gulp.task('serve', ['browser-sync'], function() {
 
 	// watch html files - do a complete reload for all browsers
