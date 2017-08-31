@@ -4,18 +4,22 @@
 /// <reference path='./servicestack-client.ts' />
 /// <reference path="../../typings/index.d.ts" />
 
-(function () {
+var mySS = (function () {
 
     const applicationId = "00000000000000000000000000000000";
 
     const client = new ss.JsonServiceClient("http://flashcardapi.eladaus.com/api");
+
+    function flipit() {
+
+    }
 
     const DeckAccordionItemTemplate = (dto : dtos.DeckDto) => {
         // console.log("in here", dto);
         return `
             <li class="item-content">
                 <div class="item-inner">
-                <div class="item-title"><a onclick="console.log('${dto.deckId}')" >${dto.name}</a></div>
+                <div class="item-title"><a href="flashcards.html?${dto.deckId}" >${dto.name}</a></div>
                 <div class="item-after"><span class="badge">${dto.numberOfCards} cards</span></div>
                 </div>
             </li>
@@ -100,6 +104,30 @@
             return response;
         } catch (err) {
             console.log(err)
+        }
+    }
+
+    // function removeClass(element: JQueryEventObject) {
+    //     console.log(element);
+    //     element.currentTarget.className = "";
+    //     //removeClass("animated flip");
+    // }
+    return {
+        doSomeStuff: function (elId: string) {
+            console.log("blah blah do some stuff to ", elId);
+            let flipTarget = $("#"+elId);
+            // flipTarget.addClass('animated flip');
+            // flipTarget.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', removeClass)
+            flipTarget.flip();
+
+            flipTarget.flip('toggle');
+        },
+
+        fliptoback : function() {
+            $("#card").flip(true);
+        },
+        fliptofront : function() {
+            $("#card").flip(false);
         }
     }
 

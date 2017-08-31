@@ -12,7 +12,43 @@
 
         <div class="page_content">
           
-          <h2 class="page_subtitle">Select topic</h2>
+          <!-- flashcard div -->
+
+          <div id="card" class="flip">
+              <div class="front absolute-center">
+                <div class="card-content">
+                  <br />
+                  <br />
+                  <br />
+                  <b><span id="frontText">[front word goes here]</span></b>
+                  <hr />
+                  <br />
+                  <br />
+                  <br />
+                </div>
+              </div>
+              <div class="back absolute-center"  >
+                <div class="card-content">
+                  <p class="iayos-center">
+                    <b><span id="backText">[front word goes here]</span></b>
+                  </p>
+                  <hr/>
+                  <p class="iayos-center">
+                    <button id="answer1" class="answer-button" value="answer1">answer1</button>
+                  </p>
+                  <p class="iayos-center">
+                    <button id="answer2" class="answer-button" value="answer2">answer2</button>
+                  </p>
+                  <p class="iayos-center">
+                    <button id="answer3" class="answer-button" value="answer3">answer3</button>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          
+            <button onclick="mySS.doSomeStuff('card')" >flip it</button>
+
 
         </div>
         <!--end of page single-->
