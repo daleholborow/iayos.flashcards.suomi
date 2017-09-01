@@ -163,7 +163,7 @@ var mySS = (function () {
 
         let activeDeck = datastore.getActiveDeck();
         // console.log("active deck is", activeDeck);
-        $("#pgFlashcardsTitle").html(datastore.getActiveDeck().name); 
+        $("#pgFlashcardsTitle").html("Studying: " + datastore.getActiveDeck().name); 
 
         // Always set to unflipped initially and configure mode
         let flashcard = FindFlashcardDiv();

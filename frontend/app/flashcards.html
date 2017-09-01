@@ -18,30 +18,29 @@
           <div id="card" class="flashcard">
               <div class="front">
                 <div class="card-content">
-                  <br /><br /><br />
                   <p class="iayos-center">
-                      <br/>
-                      <b><span id="frontText">[front word goes here]</span></b>
+                      <b><span class="cardFrontText" id="frontText">[front word goes here]</span></b>
                   </p>
-                  <br /><br /><br />
                 </div>
               </div>
-              <div class="back" style="backface-visibility: hidden; transform-style: preserve-3d; position: absolute; z-index: 0; height: 100%; width: 100%; transform: rotateY(180deg); transition: all 0.5s ease-out;">
+              <div class="back">
                 <div class="card-content">
-                  <p class="iayos-center">&nbsp;</p>
+                    <br/><br/>
                   <p class="iayos-center">
-                    <button id="answer1" class="answer-button" value="" onclick="mySS.ChooseAnswer(this);">answer1</button>
+                      <div class="call_button"><a id="answer1" href="#" onclick="mySS.ChooseAnswer(this); return false;" class="external">answer1</a></div>
                   </p>
                   <p class="iayos-center">
-                    <button id="answer2" class="answer-button" value="" onclick="mySS.ChooseAnswer(this);">answer2</button>
+                      <div class="call_button"><a id="answer2" href="#" onclick="mySS.ChooseAnswer(this); return false;" class="external">answer2</a></div>
                   </p>
+
                   <p class="iayos-center">
-                    <button id="answer3" class="answer-button" value="" onclick="mySS.ChooseAnswer(this);">answer3</button>
+                      <div class="call_button"><a id="answer3" href="#" onclick="mySS.ChooseAnswer(this); return false;" class="external">answer3</a></div>
                   </p>
-                  <br/>
+                  <br/><br/>
                 </div>
               </div>
             </div>
+            <br />
             <p>
               <div id="flipItDiv" class="call_button"><a href="#" onclick="mySS.FlipFlashcardToBack(); return false;" class="external">flip it!</a></div>
             </p>
