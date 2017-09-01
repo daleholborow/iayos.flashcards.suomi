@@ -45,6 +45,10 @@ class Datastore implements IDatastore {
     }
 
 
+    reset () : void {
+        localStorage.removeItem(Datastore.storeKey);
+    }
+
     getActiveDeck() : dtos.DeckDto {
         let deck = this.decks.find(x => x.deckId === this.activeDeckId);
         return deck;
@@ -174,6 +178,13 @@ var mySS = (function () {
     });
 
 
+    myApp.onPageAfterAnimation('clearcache', function (page) {
+        console.log('reset it all' + Date.now());
+        datastore.reset();
+        mainView.router.load({ url: 'deckcategories.html', reload: true });
+    });
+
+
     function RenderRandomCardFromDeck(deck : dtos.DeckDto) : void {
 
         // always set card to unflipped initially
@@ -200,8 +211,6 @@ var mySS = (function () {
         datastore.activeCardId = currentCard.cardId;
         $("#frontText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
         $("#backText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
-
-        
     }
 
 
@@ -209,21 +218,6 @@ var mySS = (function () {
         $("#answer"+buttonId).html(GetFaceTextByMode(isInFrontMode, card));
 		$("#answer"+buttonId).data("answer-card-id", card.cardId);
     }
-
-
-    // /*
-		
-	// */
-	// function GetRandomCardIndex(deck : dtos.DeckDto, usedCardIndices: number[]): number {
-        
-	// 	let randomIndex: number = -1;
-	// 	while (randomIndex == -1 || $.inArray(randomIndex, usedCardIndices) != -1) {
-	// 		randomIndex = Math.floor(Math.random() * deck.cards.length);
-    //     }
-    //     console.log("currently used indices are", usedCardIndices);
-    //     console.log("and for the next random index we selected", randomIndex);
-	// 	return randomIndex;
-	// }
 
 
     function ChooseAnswer(caller: any) : void {
@@ -235,8 +229,6 @@ var mySS = (function () {
 
         if (isCorrectAnswer) {
             // animate a happy thing
-            //FindFlashcardDiv().animateCss('fadeOutLeft');
-            //RenderRandomCardFromDeck(datastore.getActiveDeck());
              DoSomethingHappy(FindFlashcardDiv());
         }
         else {
