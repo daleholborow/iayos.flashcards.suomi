@@ -212,6 +212,38 @@ var mySS = (function () {
     }
 
 
+    function ChooseAnswer(caller: any, cardId : string) : void {
+        console.log("choosing an answer", caller, cardId);
+        let chosenAnswerId = $(caller).data("answer-card-id");
+        console.log("chose the card with id", chosenAnswerId);
+
+        let isCorrectAnswer : boolean = (datastore.activeCardId === chosenAnswerId);
+
+        if (isCorrectAnswer) {
+            // animate a happy thing
+            RenderRandomCardFromDeck(datastore.getActiveDeck());
+        }
+        else {
+            // animate a sad thing
+            ShakeDiv(FindFlashcardDiv());
+        }
+    }
+
+
+    function ShakeDiv(divToShake : JQuery): void {
+		var interval = 100;
+		var distance = 10;
+		var times = 5;
+		$(divToShake).css('position', 'relative');
+		for (var iter = 0; iter < (times + 1); iter++) {
+			$(divToShake).animate({
+				left: ((iter % 2 == 0 ? distance : distance * -1))
+			}, interval);
+		}
+		$(divToShake).animate({ left: 0 }, interval);
+	}
+    
+    
    	/*
 	We want to be able to randomly shuffly which mode the cards are shown in (ie. randomly show front OR back)
 	*/
@@ -268,6 +300,7 @@ var mySS = (function () {
         flipItDiv.hide();
     }
 
+
     function FlipFlashcardToFront() {
         let flipItDiv = FindFlipItDiv();
         let flashcard = FindFlashcardDiv();
@@ -289,6 +322,7 @@ var mySS = (function () {
 
     return {
         BuildAndGoToCardsPage: BuildAndGoToCardsPage,
+        ChooseAnswer : ChooseAnswer,
         FlipFlashcardToBack: FlipFlashcardToBack
     }
 
