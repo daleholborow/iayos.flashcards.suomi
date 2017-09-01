@@ -6,19 +6,15 @@
 
 
 interface IDatastore {
-    //storeKey: string;
-    
     activeDeckId: string;
-
     activeCardId: string;
-
     decks: dtos.DeckDto[];
 }
 
 class DummyDatastore implements IDatastore {
-    public activeDeckId: string;
-    public activeCardId: string;
-    public decks: dtos.DeckDto[];
+    public activeDeckId: string = null;
+    public activeCardId: string = null;
+    public decks: dtos.DeckDto[] = [];
 }
 
 /* 
@@ -28,16 +24,10 @@ class Datastore implements IDatastore {
 
     static storeKey: string = "ssLocalStore";
     
-    // activeDeckId: string = null;
-
-    // activeCardId: string = null;
-
-    // decks: dtos.DeckDto[] = [];
-
     get activeCardId() : string { return this.initData.activeCardId; }
-    set activeCardId(activeCardId: string) { this.initData.activeCardId = activeCardId; }
+    set activeCardId(activeCardId: string) { this.initData.activeCardId = activeCardId; Datastore.saveStore(this); }
     get activeDeckId() : string {return this.initData.activeDeckId;}
-    set activeDeckId(activeDeckId: string) { this.initData.activeDeckId = activeDeckId; }
+    set activeDeckId(activeDeckId: string) { this.initData.activeDeckId = activeDeckId; Datastore.saveStore(this); }
     get decks() : dtos.DeckDto[] { return this.initData.decks; }
     
     constructor(private initData : IDatastore) {
@@ -51,6 +41,7 @@ class Datastore implements IDatastore {
             this.decks.push(deck);
             // console.log("pushed to decdk collection");
         }
+        Datastore.saveStore(this);
     }
 
 
@@ -62,27 +53,26 @@ class Datastore implements IDatastore {
 
     static getStore(): Datastore {
         let localStore: Datastore;
-        console.log("trying to get store");
-        if (localStorage.getItem(this.storeKey) === null) {
-            console.log("store doesnt exist already, create and save now");
-            localStore = new Datastore(new DummyDatastore());
-            this.saveStore();
+        let currentLocalStorage = localStorage.getItem(this.storeKey);
+        // console.log("so local data is set to", currentLocalStorage);
+        if (currentLocalStorage) {
+            // console.log("and the json parsed obj is", JSON.parse(localStorage.getItem(this.storeKey)));
+            localStore = new Datastore(JSON.parse(currentLocalStorage));
+            // console.log("loaded store from localstorage", localStore);
         }
         else {
-            console.log("the local stored item is", localStorage.getItem(this.storeKey));
-            console.log("and the json parsed obj is", JSON.parse(localStorage.getItem(this.storeKey)));
-
-            localStore = new Datastore(JSON.parse(localStorage.getItem(this.storeKey)));
-            console.log("loaded store from localstorage", this);
+            // console.log("store doesnt exist already, create and save now");
+            localStore = new Datastore(new DummyDatastore());
+            Datastore.saveStore(localStore);
         }
         return localStore;
     }
 
-    
-    static saveStore(): void {
-        console.log("about to save store");
-        localStorage.setItem(this.storeKey, JSON.stringify(this));
-        console.log("store saved");
+
+    static saveStore(datastore : Datastore): void {
+        // console.log("about to save store"); 
+        localStorage.setItem(this.storeKey, JSON.stringify(datastore.initData));
+        // console.log("store saved and is now", localStorage.getItem(this.storeKey));
 	}
 }
 
@@ -136,9 +126,9 @@ var mySS = (function () {
 
         QueryDeckWithCards(deckId).then(response => {
             SetSelectedDeck(deckId);
-            console.log(response.result);
+            // console.log(response.result);
             datastore.addOrUpdateDeck(response.result);
-            console.log("now decks are:", datastore.decks);
+            // console.log("now decks are:", datastore.decks);
             mainView.router.load({ url: 'flashcards.html' });
         });
     }
@@ -168,8 +158,8 @@ var mySS = (function () {
         console.log('going to to flashcards for deck now at ' + Date.now());
 
         let activeDeck = datastore.getActiveDeck();
-        console.log("active deck is", activeDeck);
-        $("#page-deck-header").html(datastore.getActiveDeck().name); 
+        // console.log("active deck is", activeDeck);
+        $("#pgFlashcardsTitle").html(datastore.getActiveDeck().name); 
 
         // Always set to unflipped initially and configure mode
         let flashcard = FindFlashcardDiv();
@@ -178,21 +168,74 @@ var mySS = (function () {
             reverse: true
         });
         //let flipModel = flashcard.data('flip-model');
+
+        RenderRandomCardFromDeck(activeDeck);
     });
 
-    // myApp.onPageBeforeAnimation('flashcards', function (page) {
-    //     let flashcard = $("#card");
-    //     let flipModel = flashcard.data('flip-model');
-    //     console.log("does it have a model?", flipModel);
-    //     flashcard.flip({
-    //         trigger: 'manual'
-    //     });
-    //     flipModel = flashcard.data('flip-model');
-    //     // Always set to unflipped initially
-    // 	// var flip = $("#card").data("flip-model");
-    // 	// $("#card").flip(false);
-    //     console.log("going to flashcard onPageBeforeAnimation", flashcard, flipModel);
-    // });
+
+    function RenderRandomCardFromDeck(deck : dtos.DeckDto) : void {
+        
+        // always set card to unflipped initially
+        FlipFlashcardToFront();
+
+        // sometimes show the front, sometimes show the back
+		let isInFrontMode : boolean = Math.random() >= 0.5;
+		console.log("isInFrontMode:" + isInFrontMode);
+
+		let usedCardIndices: number[] = [];
+
+		let randomCardIndex = GetRandomCardIndex(deck, usedCardIndices);
+		usedCardIndices.push(randomCardIndex);
+		let card1 = deck.cards[randomCardIndex];
+		$("#answer1").html(GetFaceTextByMode(isInFrontMode, card1));
+		$("#answer1").data("answer-card-id", card1.cardId);
+
+		randomCardIndex = GetRandomCardIndex(deck, usedCardIndices);
+		usedCardIndices.push(randomCardIndex);
+		let card2 = deck.cards[randomCardIndex];
+		$("#answer2").html(GetFaceTextByMode(isInFrontMode, card2));
+		$("#answer2").data("answer-card-id", card2.cardId);
+
+		randomCardIndex = GetRandomCardIndex(deck, usedCardIndices);
+		usedCardIndices.push(randomCardIndex);
+		let card3 = deck.cards[randomCardIndex];
+		$("#answer3").html(GetFaceTextByMode(isInFrontMode, card3));
+		$("#answer3").data("answer-card-id", card3.cardId);
+
+		// which one to use as the front?
+		let currentCardIndex = usedCardIndices[Math.floor(Math.random() * usedCardIndices.length)];
+		console.log("current card index is" + currentCardIndex);
+		let currentCard = deck.cards[currentCardIndex];
+		datastore.activeCardId = currentCard.cardId;
+		$("#frontText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
+		$("#backText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
+    }
+
+
+   	/*
+	We want to be able to randomly shuffly which mode the cards are shown in (ie. randomly show front OR back)
+	*/
+	function GetFaceTextByMode(isInFrontMode : boolean, card : dtos.CardDto) : string {
+		if (isInFrontMode) {
+			return card.frontText;
+		}
+		return card.backText;
+	}
+
+	/*
+		
+	*/
+	function GetRandomCardIndex(deck : dtos.DeckDto, usedCardIndices: number[]): number {
+        
+		let randomIndex: number = -1;
+		while (randomIndex == -1 || $.inArray(randomIndex, usedCardIndices) != -1) {
+			randomIndex = Math.floor(Math.random() * deck.cards.length);
+        }
+        console.log("currently used indices are", usedCardIndices);
+        console.log("and for the next random index we selected", randomIndex);
+		return randomIndex;
+	}
+
 
     const QueryDeckCategories = async (applicationId: string) => {
         let request = new dtos.ListDeckCategoriesByApplicationRequest();
@@ -225,38 +268,28 @@ var mySS = (function () {
         flipItDiv.hide();
     }
 
+    function FlipFlashcardToFront() {
+        let flipItDiv = FindFlipItDiv();
+        let flashcard = FindFlashcardDiv();
+        flashcard.flip(false);
+        flipItDiv.show();
+    }
 
-    function FindFlashcardDiv() {
+
+    function FindFlashcardDiv() : JQuery {
         let flashcard = $("#card");
         return flashcard;
     }
 
 
-    function FindFlipItDiv() {
+    function FindFlipItDiv() : JQuery {
         let flipItDiv = $("#flipItDiv");
         return flipItDiv;
     }
 
     return {
-
         BuildAndGoToCardsPage: BuildAndGoToCardsPage,
         FlipFlashcardToBack: FlipFlashcardToBack
-
-
-        // doSomeStuff: function (elId: string) {
-
-        //     let flashcard = $("#card");
-        //     let flipModel = flashcard.data('flip-model');
-        //     console.log("after flipping the flipmodel is", flipModel);
-
-        //     console.log("blah blah do some stuff to ", elId);
-        //     let flipTarget = $("#"+elId);
-        //     // flipTarget.addClass('animated flip');
-        //     // flipTarget.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', removeClass)
-        //     flipTarget.flip();
-
-        //     flipTarget.flip('toggle');
-        // },
     }
 
 })();
