@@ -8,29 +8,32 @@
       </div>
       <div id="pages_maincontent">
 
-        <h2 class="page_title">Deck Name Here</h2>
+        <h2 class="page_title" id="pgFlashcardsTitle">Deck Name Here</h2>
 
         <div class="page_content">
           
+
           <!-- flashcard div -->
 
-          <div id="card" class="flip">
-              <div class="front absolute-center">
+          <div id="card" class="flashcard">
+              <div class="front">
                 <div class="card-content">
                   <br />
                   <br />
                   <br />
+                  <p class="iayos-center">
                   <b><span id="frontText">[front word goes here]</span></b>
+                  </p>
                   <hr />
                   <br />
                   <br />
                   <br />
                 </div>
               </div>
-              <div class="back absolute-center"  >
+              <div class="back" style="backface-visibility: hidden; transform-style: preserve-3d; position: absolute; z-index: 0; height: 100%; width: 100%; transform: rotateY(180deg); transition: all 0.5s ease-out;">
                 <div class="card-content">
                   <p class="iayos-center">
-                    <b><span id="backText">[front word goes here]</span></b>
+                    <b><span id="backText">[back word goes here]</span></b>
                   </p>
                   <hr/>
                   <p class="iayos-center">
@@ -48,7 +51,9 @@
 
           
             <button onclick="mySS.doSomeStuff('card')" >flip it</button>
-
+            <!-- put an advert in here? -->
+            <!-- <input id="toggle-flashcard" type="button" value="FLIP"> -->
+            <!--<button id="btn-read" class="button" value="READ TO ME">READ TO ME</button>-->
 
         </div>
         <!--end of page single-->

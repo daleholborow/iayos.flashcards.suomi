@@ -83,6 +83,32 @@ var mySS = (function () {
         BuildAndGoToDeckCategoriesPage();
     });
 
+    myApp.onPageInit('flashcards', function (page) {
+        // Always set to unflipped initially
+        let flashcard = $("#card");
+        let flipModel = flashcard.data('flip-model');
+
+        // flashcard.flip({
+        //     		trigger: 'manual'
+        //     	});
+
+		// var flip = $("#card").data("flip-model");
+		// $("#card").flip(false);
+        console.log("going to flashcards onPageInit", flashcard, flipModel);
+    });
+    myApp.onPageBeforeAnimation('flashcards', function (page) {
+        let flashcard = $("#card");
+        let flipModel = flashcard.data('flip-model');
+        console.log("does it have a model?", flipModel);
+        flashcard.flip({
+            trigger: 'manual'
+        });
+        flipModel = flashcard.data('flip-model');
+        // Always set to unflipped initially
+		// var flip = $("#card").data("flip-model");
+		// $("#card").flip(false);
+        console.log("going to flashcard onPageBeforeAnimation", flashcard, flipModel);
+    });
 
     const QueryDeckCategories = async (applicationId: string) => {
         let request = new dtos.ListDeckCategoriesByApplicationRequest();
@@ -112,8 +138,15 @@ var mySS = (function () {
     //     element.currentTarget.className = "";
     //     //removeClass("animated flip");
     // }
+
+
     return {
         doSomeStuff: function (elId: string) {
+
+            let flashcard = $("#card");
+            let flipModel = flashcard.data('flip-model');
+            console.log("after flipping the flipmodel is", flipModel);
+
             console.log("blah blah do some stuff to ", elId);
             let flipTarget = $("#"+elId);
             // flipTarget.addClass('animated flip');
