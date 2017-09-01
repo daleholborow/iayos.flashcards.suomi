@@ -170,50 +170,64 @@ var mySS = (function () {
         //let flipModel = flashcard.data('flip-model');
 
         RenderRandomCardFromDeck(activeDeck);
+        FindFlipItDiv().show();
     });
 
 
     function RenderRandomCardFromDeck(deck : dtos.DeckDto) : void {
-        
+
         // always set card to unflipped initially
         FlipFlashcardToFront();
 
         // sometimes show the front, sometimes show the back
 		let isInFrontMode : boolean = Math.random() >= 0.5;
-		console.log("isInFrontMode:" + isInFrontMode);
+		//console.log("isInFrontMode:" + isInFrontMode);
 
-		let usedCardIndices: number[] = [];
+        isInFrontMode = false;
 
-		let randomCardIndex = GetRandomCardIndex(deck, usedCardIndices);
-		usedCardIndices.push(randomCardIndex);
-		let card1 = deck.cards[randomCardIndex];
-		$("#answer1").html(GetFaceTextByMode(isInFrontMode, card1));
-		$("#answer1").data("answer-card-id", card1.cardId);
+        let selectedCards : dtos.CardDto[] = [];
+        let numCards = 3;
+        while (selectedCards.length < numCards) {
+            let randomCard = deck.cards[Math.floor(Math.random() * deck.cards.length)];
+            if (selectedCards.find(c => c.cardId == randomCard.cardId) == undefined) {
+                selectedCards.push(randomCard);
+                RenderAnswerButton(isInFrontMode, selectedCards.length, randomCard);
+            }
+            console.log("currently selected cards are:", selectedCards);
+        }
+        let currentCard = selectedCards[Math.floor(Math.random() * selectedCards.length)];
+        console.log("selected active card", currentCard);
+        datastore.activeCardId = currentCard.cardId;
+        $("#frontText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
+        $("#backText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
 
-		randomCardIndex = GetRandomCardIndex(deck, usedCardIndices);
-		usedCardIndices.push(randomCardIndex);
-		let card2 = deck.cards[randomCardIndex];
-		$("#answer2").html(GetFaceTextByMode(isInFrontMode, card2));
-		$("#answer2").data("answer-card-id", card2.cardId);
-
-		randomCardIndex = GetRandomCardIndex(deck, usedCardIndices);
-		usedCardIndices.push(randomCardIndex);
-		let card3 = deck.cards[randomCardIndex];
-		$("#answer3").html(GetFaceTextByMode(isInFrontMode, card3));
-		$("#answer3").data("answer-card-id", card3.cardId);
-
-		// which one to use as the front?
-		let currentCardIndex = usedCardIndices[Math.floor(Math.random() * usedCardIndices.length)];
-		console.log("current card index is" + currentCardIndex);
-		let currentCard = deck.cards[currentCardIndex];
-		datastore.activeCardId = currentCard.cardId;
-		$("#frontText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
-		$("#backText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
+        
     }
 
 
-    function ChooseAnswer(caller: any, cardId : string) : void {
-        console.log("choosing an answer", caller, cardId);
+    function RenderAnswerButton(isInFrontMode : boolean, buttonId : number, card : dtos.CardDto) {
+        $("#answer"+buttonId).html(GetFaceTextByMode(isInFrontMode, card));
+		$("#answer"+buttonId).data("answer-card-id", card.cardId);
+    }
+
+
+    // /*
+		
+	// */
+	// function GetRandomCardIndex(deck : dtos.DeckDto, usedCardIndices: number[]): number {
+        
+	// 	let randomIndex: number = -1;
+	// 	while (randomIndex == -1 || $.inArray(randomIndex, usedCardIndices) != -1) {
+	// 		randomIndex = Math.floor(Math.random() * deck.cards.length);
+    //     }
+    //     console.log("currently used indices are", usedCardIndices);
+    //     console.log("and for the next random index we selected", randomIndex);
+	// 	return randomIndex;
+	// }
+
+
+    function ChooseAnswer(caller: any) : void {
+        // console.log("choosing an answer", caller);
         let chosenAnswerId = $(caller).data("answer-card-id");
         console.log("chose the card with id", chosenAnswerId);
 
@@ -221,27 +235,47 @@ var mySS = (function () {
 
         if (isCorrectAnswer) {
             // animate a happy thing
-            RenderRandomCardFromDeck(datastore.getActiveDeck());
+            //FindFlashcardDiv().animateCss('fadeOutLeft');
+            //RenderRandomCardFromDeck(datastore.getActiveDeck());
+             DoSomethingHappy(FindFlashcardDiv());
         }
         else {
             // animate a sad thing
-            ShakeDiv(FindFlashcardDiv());
+            DoSomethingSad(FindFlashcardDiv());
         }
     }
 
 
-    function ShakeDiv(divToShake : JQuery): void {
-		var interval = 100;
-		var distance = 10;
-		var times = 5;
-		$(divToShake).css('position', 'relative');
-		for (var iter = 0; iter < (times + 1); iter++) {
-			$(divToShake).animate({
-				left: ((iter % 2 == 0 ? distance : distance * -1))
-			}, interval);
-		}
-		$(divToShake).animate({ left: 0 }, interval);
-	}
+    function DoSomethingHappy(divToShake : JQuery): void {
+        let animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+        let animationName = 'fadeOutLeft';
+        divToShake.addClass('animated ' + animationName);
+        
+        console.log("doing something happy in add class");
+        RenderRandomCardFromDeck(datastore.getActiveDeck());
+        console.log("doing something happy after render card");
+
+        divToShake.one(animationEnd, function() {
+            
+            $(this).removeClass('animated ' + animationName);
+            console.log("doing something happy removeing class");
+            FindFlipItDiv().show();
+        });
+    }
+
+    function DoSomethingSad(divToShake : JQuery): void {
+        divToShake.animateCss('shake');
+    }
+    
+    $.fn.extend({
+        animateCss: function (animationName) {
+            var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+            this.addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass('animated ' + animationName);
+            });
+            return this;
+        }
+    });
     
     
    	/*
@@ -302,10 +336,10 @@ var mySS = (function () {
 
 
     function FlipFlashcardToFront() {
-        let flipItDiv = FindFlipItDiv();
         let flashcard = FindFlashcardDiv();
         flashcard.flip(false);
-        flipItDiv.show();
+        // let flipItDiv = FindFlipItDiv();
+        // flipItDiv.show();
     }
 
 
