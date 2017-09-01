@@ -197,7 +197,7 @@ var mySS = (function () {
 		let isInFrontMode : boolean = Math.random() >= 0.5;
 		//console.log("isInFrontMode:" + isInFrontMode);
 
-        isInFrontMode = false;
+        //isInFrontMode = false;
 
         let selectedCards : dtos.CardDto[] = [];
         let numCards = 3;

@@ -132,13 +132,26 @@ tr:nth-child(odd) {
 }
 
 
+.size-medium { font-size: 300%; }
 
-.size-22 { font-size: 22px }
-.size-25 { font-size: 25px }
-.size-29 { font-size: 29px }
-.size-50 { font-size: 50px }
-.size-75 { font-size: 70px }
-.size-100 { font-size: 100px }
+@media only screen and (max-width: 320px) {
+    .size-22 { font-size: 22px }
+    .size-25 { font-size: 25px }
+    .size-29 { font-size: 29px }
+    .size-50 { font-size: 50px }
+    .size-75 { font-size: 70px }
+    .size-100 { font-size: 100px }
+}
+
+@media only screen and (max-width: 600px) {
+    .size-22 { font-size: 10px }
+    .size-25 { font-size: 11px }
+    .size-29 { font-size: 12px }
+    .size-50 { font-size: 20px }
+    .size-75 { font-size: 30px }
+    .size-100 { font-size: 45px }
+}
+
 
 .color-black { color: #000 }
 .color-white { color: #fff }
