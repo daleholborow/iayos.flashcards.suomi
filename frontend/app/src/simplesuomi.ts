@@ -25,9 +25,9 @@ class Datastore implements IDatastore {
     static storeKey: string = "ssLocalStore";
     
     get activeCardId() : string { return this.initData.activeCardId; }
-    set activeCardId(activeCardId: string) { this.initData.activeCardId = activeCardId; Datastore.saveStore(this); }
+    set activeCardId(activeCardId: string) { this.initData.activeCardId = activeCardId; this.saveToLocalStorage(); }
     get activeDeckId() : string {return this.initData.activeDeckId;}
-    set activeDeckId(activeDeckId: string) { this.initData.activeDeckId = activeDeckId; Datastore.saveStore(this); }
+    set activeDeckId(activeDeckId: string) { this.initData.activeDeckId = activeDeckId; this.saveToLocalStorage(); }
     get decks() : dtos.DeckDto[] { return this.initData.decks; }
     
     constructor(private initData : IDatastore) {
@@ -42,12 +42,14 @@ class Datastore implements IDatastore {
             this.decks.push(deck);
             console.log("pushed to decdk collection");
         }
-        Datastore.saveStore(this);
+        this.saveToLocalStorage();
     }
 
 
-    reset () : void {
-        localStorage.removeItem(Datastore.storeKey);
+    reset () : Datastore {
+        this.initData = new DummyDatastore();
+        this.saveToLocalStorage();
+        return this;
     }
 
     getActiveDeck() : dtos.DeckDto {
@@ -58,7 +60,7 @@ class Datastore implements IDatastore {
 
     static getStore(): Datastore {
         let localStore: Datastore;
-        let currentLocalStorage = localStorage.getItem(this.storeKey);
+        let currentLocalStorage = localStorage.getItem(Datastore.storeKey);
         // console.log("so local data is set to", currentLocalStorage);
         if (currentLocalStorage) {
             // console.log("and the json parsed obj is", JSON.parse(localStorage.getItem(this.storeKey)));
@@ -66,19 +68,19 @@ class Datastore implements IDatastore {
             // console.log("loaded store from localstorage", localStore);
         }
         else {
-            // console.log("store doesnt exist already, create and save now");
+            console.log("store doesnt exist already, create and save now");
             localStore = new Datastore(new DummyDatastore());
-            Datastore.saveStore(localStore);
+            localStore.saveToLocalStorage();
+            //localStore = Datastore.reset();
         }
         return localStore;
     }
 
 
-    static saveStore(datastore : Datastore): void {
-        // console.log("about to save store"); 
-        localStorage.setItem(this.storeKey, JSON.stringify(datastore.initData));
-        // console.log("store saved and is now", localStorage.getItem(this.storeKey));
-	}
+    saveToLocalStorage () : void {
+        localStorage.setItem(Datastore.storeKey, JSON.stringify(this.initData));
+    }
+
 }
 
 var mySS = (function () {
