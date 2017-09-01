@@ -36,10 +36,11 @@ class Datastore implements IDatastore {
 
     addOrUpdateDeck(deck : dtos.DeckDto) {
         let existingDeck = this.decks.find(x => x.deckId === deck.deckId);
-        //console.log("did we find the deck?", existingDeck);
+        console.log("did we find the deck?", existingDeck);
         if (existingDeck === undefined) {
+            console.log("about to push deck with values", deck);
             this.decks.push(deck);
-            // console.log("pushed to decdk collection");
+            console.log("pushed to decdk collection");
         }
         Datastore.saveStore(this);
     }
