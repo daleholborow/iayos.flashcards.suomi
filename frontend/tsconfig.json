@@ -36,6 +36,8 @@
         "sourceMap": true,
         "target": "ES5",
         "lib": [
+            "dom",
+            "es2015",
             "es2015.core"
         ]
     },
