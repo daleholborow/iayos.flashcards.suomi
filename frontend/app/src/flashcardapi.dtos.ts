@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-08-31 14:51:03
+Date: 2017-09-01 12:09:58
 Version: 4.512
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://flashcardapi.eladaus.com/api
