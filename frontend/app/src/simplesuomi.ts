@@ -5,38 +5,81 @@
 /// <reference path="../../typings/index.d.ts" />
 
 
+interface IDatastore {
+    //storeKey: string;
+    
+    activeDeckId: string;
+
+    activeCardId: string;
+
+    decks: dtos.DeckDto[];
+}
+
+class DummyDatastore implements IDatastore {
+    public activeDeckId: string;
+    public activeCardId: string;
+    public decks: dtos.DeckDto[];
+}
+
 /* 
     Local storage container
 */
-class LocalStore {
+class Datastore implements IDatastore {
 
-    storeKey: string = "ssLocalStore";
+    static storeKey: string = "ssLocalStore";
     
-    activeDeckId: string = null;
+    // activeDeckId: string = null;
 
-    activeCardId: string = null;
+    // activeCardId: string = null;
 
-    decks: dtos.DeckDto[] = [];
+    // decks: dtos.DeckDto[] = [];
 
-    constructor() {
+    get activeCardId() : string { return this.initData.activeCardId; }
+    set activeCardId(activeCardId: string) { this.initData.activeCardId = activeCardId; }
+    get activeDeckId() : string {return this.initData.activeDeckId;}
+    set activeDeckId(activeDeckId: string) { this.initData.activeDeckId = activeDeckId; }
+    get decks() : dtos.DeckDto[] { return this.initData.decks; }
+    
+    constructor(private initData : IDatastore) {
     }
 
-    getStore(): LocalStore {
-        let localStore: LocalStore;
+
+    addOrUpdateDeck(deck : dtos.DeckDto) {
+        let existingDeck = this.decks.find(x => x.deckId === deck.deckId);
+        //console.log("did we find the deck?", existingDeck);
+        if (existingDeck === undefined) {
+            this.decks.push(deck);
+            // console.log("pushed to decdk collection");
+        }
+    }
+
+
+    getActiveDeck() : dtos.DeckDto {
+        let deck = this.decks.find(x => x.deckId === this.activeDeckId);
+        return deck;
+    }
+
+
+    static getStore(): Datastore {
+        let localStore: Datastore;
         console.log("trying to get store");
         if (localStorage.getItem(this.storeKey) === null) {
             console.log("store doesnt exist already, create and save now");
-            localStore = new LocalStore();
+            localStore = new Datastore(new DummyDatastore());
             this.saveStore();
         }
         else {
-            localStore = JSON.parse(localStorage.getItem(this.storeKey));
+            console.log("the local stored item is", localStorage.getItem(this.storeKey));
+            console.log("and the json parsed obj is", JSON.parse(localStorage.getItem(this.storeKey)));
+
+            localStore = new Datastore(JSON.parse(localStorage.getItem(this.storeKey)));
             console.log("loaded store from localstorage", this);
         }
         return localStore;
     }
 
-    saveStore(): void {
+    
+    static saveStore(): void {
         console.log("about to save store");
         localStorage.setItem(this.storeKey, JSON.stringify(this));
         console.log("store saved");
@@ -47,7 +90,7 @@ var mySS = (function () {
 
     const applicationId = "0d467630-dcab-4883-a754-d2a107442e56";
     const client = new ss.JsonServiceClient("http://flashcardapi.eladaus.com/api");
-    let localStore = new LocalStore().getStore();
+    let datastore = Datastore.getStore();
 
     const DeckAccordionItemTemplate = (dto: dtos.DeckDto) => {
         // console.log("in here", dto);
@@ -91,18 +134,20 @@ var mySS = (function () {
     function BuildAndGoToCardsPage(deckId: string) {
         console.log("Get deck with cards and go to flashcard page");
 
-        SetSelectedDeck(deckId);
-
-        QueryDeckWithCards(localStore.activeDeckId).then(response => {
+        QueryDeckWithCards(deckId).then(response => {
+            SetSelectedDeck(deckId);
             console.log(response.result);
+            datastore.addOrUpdateDeck(response.result);
+            console.log("now decks are:", datastore.decks);
             mainView.router.load({ url: 'flashcards.html' });
         });
     }
 
     function SetSelectedDeck(deckId: string) {
-        console.log("setting active deck from " + localStore.activeDeckId + " to " + deckId);
-        localStore.activeDeckId = deckId;
-        console.log("active deck is now " + localStore.activeDeckId);
+        console.log("setting active deck from " + datastore.activeDeckId + " to " + deckId);
+        datastore.activeDeckId = deckId;
+        datastore.activeCardId = null;
+        console.log("active deck is now " + datastore.activeDeckId);
     }
 
 
@@ -121,6 +166,11 @@ var mySS = (function () {
 
     myApp.onPageInit('flashcards', function (page) {
         console.log('going to to flashcards for deck now at ' + Date.now());
+
+        let activeDeck = datastore.getActiveDeck();
+        console.log("active deck is", activeDeck);
+        $("#page-deck-header").html(datastore.getActiveDeck().name); 
+
         // Always set to unflipped initially and configure mode
         let flashcard = FindFlashcardDiv();
         flashcard.flip({
