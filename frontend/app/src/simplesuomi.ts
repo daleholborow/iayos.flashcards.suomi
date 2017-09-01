@@ -4,22 +4,57 @@
 /// <reference path='./servicestack-client.ts' />
 /// <reference path="../../typings/index.d.ts" />
 
-var mySS = (function () {
 
-    const applicationId = "00000000000000000000000000000000";
+/* 
+    Local storage container
+*/
+class LocalStore {
 
-    const client = new ss.JsonServiceClient("http://flashcardapi.eladaus.com/api");
+    storeKey: string = "ssLocalStore";
+    
+    activeDeckId: string = null;
 
-    function flipit() {
+    activeCardId: string = null;
 
+    decks: dtos.DeckDto[] = [];
+
+    constructor() {
     }
 
-    const DeckAccordionItemTemplate = (dto : dtos.DeckDto) => {
+    getStore(): LocalStore {
+        let localStore: LocalStore;
+        console.log("trying to get store");
+        if (localStorage.getItem(this.storeKey) === null) {
+            console.log("store doesnt exist already, create and save now");
+            localStore = new LocalStore();
+            this.saveStore();
+        }
+        else {
+            localStore = JSON.parse(localStorage.getItem(this.storeKey));
+            console.log("loaded store from localstorage", this);
+        }
+        return localStore;
+    }
+
+    saveStore(): void {
+        console.log("about to save store");
+        localStorage.setItem(this.storeKey, JSON.stringify(this));
+        console.log("store saved");
+	}
+}
+
+var mySS = (function () {
+
+    const applicationId = "0d467630-dcab-4883-a754-d2a107442e56";
+    const client = new ss.JsonServiceClient("http://flashcardapi.eladaus.com/api");
+    let localStore = new LocalStore().getStore();
+
+    const DeckAccordionItemTemplate = (dto: dtos.DeckDto) => {
         // console.log("in here", dto);
         return `
             <li class="item-content">
                 <div class="item-inner">
-                <div class="item-title"><a href="flashcards.html?${dto.deckId}" >${dto.name}</a></div>
+                <div class="item-title"><a href="#" onclick="mySS.BuildAndGoToCardsPage('${dto.deckId}');return false;" >${dto.name}</a></div>
                 <div class="item-after"><span class="badge">${dto.numberOfCards} cards</span></div>
                 </div>
             </li>
@@ -47,28 +82,29 @@ var mySS = (function () {
     };
 
     function BuildAndGoToDeckCategoriesPage() {
+        console.log("Get deck categories for application and go deck categories page");
         QueryDeckCategories(applicationId).then(response => {
             $("#deckCategoryList").html(response.results.map(DeckCategoryAccordionTemplate).join(''));
         });
     }
 
-    function BuildAndGoToCardsPage(deckId : string) {
-        QueryDeckWithCards(deckId).then(response => {
+    function BuildAndGoToCardsPage(deckId: string) {
+        console.log("Get deck with cards and go to flashcard page");
+
+        SetSelectedDeck(deckId);
+
+        QueryDeckWithCards(localStore.activeDeckId).then(response => {
             console.log(response.result);
+            mainView.router.load({ url: 'flashcards.html' });
         });
     }
 
-    // myApp.onPageInit('index', function(page){
-    //     console.log("i am totaly in here");
-    //     $('#homepagelogo').click(function () {
-    //         //parent.history.back();
-    //         console.log("testing");
-    //         //myApp.
-    //         //return false;
-    //         $('#lnkDeckcategories').trigger('click');
-    //     });
+    function SetSelectedDeck(deckId: string) {
+        console.log("setting active deck from " + localStore.activeDeckId + " to " + deckId);
+        localStore.activeDeckId = deckId;
+        console.log("active deck is now " + localStore.activeDeckId);
+    }
 
-    // });
 
     myApp.onPageInit('about', function (page) {
         console.log('going to the about page' + Date.now());
@@ -84,31 +120,29 @@ var mySS = (function () {
     });
 
     myApp.onPageInit('flashcards', function (page) {
-        // Always set to unflipped initially
-        let flashcard = $("#card");
-        let flipModel = flashcard.data('flip-model');
-
-        // flashcard.flip({
-        //     		trigger: 'manual'
-        //     	});
-
-		// var flip = $("#card").data("flip-model");
-		// $("#card").flip(false);
-        console.log("going to flashcards onPageInit", flashcard, flipModel);
-    });
-    myApp.onPageBeforeAnimation('flashcards', function (page) {
-        let flashcard = $("#card");
-        let flipModel = flashcard.data('flip-model');
-        console.log("does it have a model?", flipModel);
+        console.log('going to to flashcards for deck now at ' + Date.now());
+        // Always set to unflipped initially and configure mode
+        let flashcard = FindFlashcardDiv();
         flashcard.flip({
-            trigger: 'manual'
+            trigger: 'manual',
+            reverse: true
         });
-        flipModel = flashcard.data('flip-model');
-        // Always set to unflipped initially
-		// var flip = $("#card").data("flip-model");
-		// $("#card").flip(false);
-        console.log("going to flashcard onPageBeforeAnimation", flashcard, flipModel);
+        //let flipModel = flashcard.data('flip-model');
     });
+
+    // myApp.onPageBeforeAnimation('flashcards', function (page) {
+    //     let flashcard = $("#card");
+    //     let flipModel = flashcard.data('flip-model');
+    //     console.log("does it have a model?", flipModel);
+    //     flashcard.flip({
+    //         trigger: 'manual'
+    //     });
+    //     flipModel = flashcard.data('flip-model');
+    //     // Always set to unflipped initially
+    // 	// var flip = $("#card").data("flip-model");
+    // 	// $("#card").flip(false);
+    //     console.log("going to flashcard onPageBeforeAnimation", flashcard, flipModel);
+    // });
 
     const QueryDeckCategories = async (applicationId: string) => {
         let request = new dtos.ListDeckCategoriesByApplicationRequest();
@@ -133,35 +167,46 @@ var mySS = (function () {
         }
     }
 
-    // function removeClass(element: JQueryEventObject) {
-    //     console.log(element);
-    //     element.currentTarget.className = "";
-    //     //removeClass("animated flip");
-    // }
 
+    function FlipFlashcardToBack() {
+        let flipItDiv = FindFlipItDiv();
+        let flashcard = FindFlashcardDiv();
+        flashcard.flip(true);
+        flipItDiv.hide();
+    }
+
+
+    function FindFlashcardDiv() {
+        let flashcard = $("#card");
+        return flashcard;
+    }
+
+
+    function FindFlipItDiv() {
+        let flipItDiv = $("#flipItDiv");
+        return flipItDiv;
+    }
 
     return {
-        doSomeStuff: function (elId: string) {
 
-            let flashcard = $("#card");
-            let flipModel = flashcard.data('flip-model');
-            console.log("after flipping the flipmodel is", flipModel);
+        BuildAndGoToCardsPage: BuildAndGoToCardsPage,
+        FlipFlashcardToBack: FlipFlashcardToBack
 
-            console.log("blah blah do some stuff to ", elId);
-            let flipTarget = $("#"+elId);
-            // flipTarget.addClass('animated flip');
-            // flipTarget.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', removeClass)
-            flipTarget.flip();
 
-            flipTarget.flip('toggle');
-        },
+        // doSomeStuff: function (elId: string) {
 
-        fliptoback : function() {
-            $("#card").flip(true);
-        },
-        fliptofront : function() {
-            $("#card").flip(false);
-        }
+        //     let flashcard = $("#card");
+        //     let flipModel = flashcard.data('flip-model');
+        //     console.log("after flipping the flipmodel is", flipModel);
+
+        //     console.log("blah blah do some stuff to ", elId);
+        //     let flipTarget = $("#"+elId);
+        //     // flipTarget.addClass('animated flip');
+        //     // flipTarget.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', removeClass)
+        //     flipTarget.flip();
+
+        //     flipTarget.flip('toggle');
+        // },
     }
 
 })();
