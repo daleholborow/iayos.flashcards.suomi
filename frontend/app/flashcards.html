@@ -1,0 +1,60 @@
+<div class="pages">
+  <div data-page="flashcards" class="page no-toolbar no-navbar">
+    <div class="page-content">
+
+      <div class="navbarpages">
+        <div class="nav_left_logo"><a href="index.html"><img src="images/logo.png" alt="" title="" /></a></div>
+        <div class="nav_right_button"><a href="menu.html"><img src="images/icons/white/menu.png" alt="" title="" /></a></div>
+      </div>
+      <div id="pages_maincontent">
+
+        <h2 class="page_title" id="pgFlashcardsTitle">Deck Name Here</h2>
+
+        <div class="page_content">
+          
+
+          <!-- flashcard div -->
+
+          <div id="card" class="flashcard">
+              <div class="front">
+                <div class="card-content">
+                  <br /><br /><br />
+                  <p class="iayos-center">
+                      <br/>
+                      <b><span id="frontText">[front word goes here]</span></b>
+                  </p>
+                  <br /><br /><br />
+                </div>
+              </div>
+              <div class="back" style="backface-visibility: hidden; transform-style: preserve-3d; position: absolute; z-index: 0; height: 100%; width: 100%; transform: rotateY(180deg); transition: all 0.5s ease-out;">
+                <div class="card-content">
+                  <p class="iayos-center">&nbsp;</p>
+                  <p class="iayos-center">
+                    <button id="answer1" class="answer-button" value="answer1">answer1</button>
+                  </p>
+                  <p class="iayos-center">
+                    <button id="answer2" class="answer-button" value="answer2">answer2</button>
+                  </p>
+                  <p class="iayos-center">
+                    <button id="answer3" class="answer-button" value="answer3">answer3</button>
+                  </p>
+                  <br/>
+                </div>
+              </div>
+            </div>
+            <p>
+              <div id="flipItDiv" class="call_button"><a href="#" onclick="mySS.FlipFlashcardToBack(); return false;" class="external">flip it!</a></div>
+            </p>
+            <!-- put an advert in here? -->
+            <!-- <input id="toggle-flashcard" type="button" value="FLIP"> -->
+            <!--<button id="btn-read" class="button" value="READ TO ME">READ TO ME</button>-->
+
+        </div>
+        <!--end of page single-->
+
+      </div>
+
+
+    </div>
+  </div>
+</div>

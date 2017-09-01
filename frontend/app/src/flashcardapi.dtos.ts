@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-08-29 12:14:25
+Date: 2017-08-31 14:51:03
 Version: 4.512
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://flashcardapi.eladaus.com/api
@@ -92,6 +92,7 @@ module dtos
         name: string;
         frontLanguage: LanguageFlag;
         backLanguage: LanguageFlag;
+        numberOfCards: number;
         cards: CardDto[];
     }
 
