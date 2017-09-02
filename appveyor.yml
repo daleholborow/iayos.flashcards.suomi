@@ -32,7 +32,7 @@
   
   # Retain NuGet, Bower & NPM package caches between builds.  
   cache:
-    - '%LocalAppData%\bower\cache\packages'		# Preserve Bower packages (note LOCAL not ROAMING location)
+    #- '%LocalAppData%\bower\cache\packages'		# Preserve Bower packages (note LOCAL not ROAMING location)
     - '%APPDATA%\npm-cache'
     - frontend\node_modules -> C:\projects\iayos-flashcards-suomi\frontend\package.json
     - frontend\typings -> C:\projects\iayos-flashcards-suomi\frontend\typings.json

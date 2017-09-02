@@ -158,7 +158,7 @@ var mySS = (function () {
     });
 
     myApp.onPageInit('deckcategories', function (page) {
-        console.log('going o view deck categories' + Date.now());
+        console.log('going to view deck categories' + Date.now());
         BuildAndGoToDeckCategoriesPage();
     });
 

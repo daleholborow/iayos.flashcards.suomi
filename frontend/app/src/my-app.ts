@@ -1,3 +1,7 @@
+/// <reference path="../../typings/index.d.ts" />
+/// <reference path="../../typings_app/app.d.ts" />
+
+
 // Initialize your app
 let myApp = new Framework7({
 	animateNavBackIcon: true,
