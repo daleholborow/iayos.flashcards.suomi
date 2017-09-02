@@ -53,17 +53,6 @@ gulp.task('styles', function() {
 });
 
 
-// typescript
-
-/*var tsProject = tsc.createProject({
-    declaration: false,
-    outDir: paths.tscripts.dest,
-    excludes : [
-        paths.tscripts.dest,
-        "node_modules"
-    ]
-});*/
-
 var tsProject = tsc.createProject('tsconfig.json');
 
 gulp.task('build', ['compile:typescript']);
@@ -107,17 +96,6 @@ gulp.task('lint:default', function(){
         }));
 });
 
-/*
-// run task - not used at this point
-gulp.task('run', function() {
-	// do nothing for now
-});
-
-// buildrun task - not used at this point
-gulp.task('buildrun', ['build', 'run'], function() {
-	// do nothing for now
-});
-*/
 
 // static server + watching css/html files
 gulp.task('test', ['serve']);

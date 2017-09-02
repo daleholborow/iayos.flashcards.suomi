@@ -90,7 +90,7 @@ var mySS = (function () {
     let datastore = Datastore.getStore();
 
     const DeckAccordionItemTemplate = (dto: dtos.DeckDto) => {
-        // console.log("in here", dto);
+        console.log("rendering a deck item", dto.deckId, dto);
         return `
             <li class="item-content">
                 <div class="item-inner">
@@ -102,6 +102,7 @@ var mySS = (function () {
     };
 
     const DeckCategoryAccordionTemplate = (dto: dtos.DeckCategoryDto) => {
+        console.log("rendering a deck item", dto.deckCategoryId, dto);
         let deckAccordionItems = dto.decks.map(DeckAccordionItemTemplate).join('');
         return `
         <div class="accordion-item">
