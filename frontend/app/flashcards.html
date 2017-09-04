@@ -1,0 +1,65 @@
+<div class="pages">
+  <div data-page="flashcards" class="page no-toolbar no-navbar">
+    <div class="page-content">
+
+      <div class="navbarpages">
+        <div class="nav_left_logo"><a href="index.html"><img src="images/logo.png" alt="" title="" /></a></div>
+        <div class="nav_right_button"><a href="menu.html"><img src="images/icons/white/menu.png" alt="" title="" /></a></div>
+      </div>
+      <div id="pages_maincontent">
+
+        <h2 class="page_title" id="pgFlashcardsTitle">Deck Name Here</h2>
+
+        <div class="page_content">
+
+
+          <!-- flashcard div -->
+
+          <div id="card" class="flashcard">
+            <div class="front">
+
+              <div class="card-content">
+                <br/>
+                <img id="frontflag" class="flag" src="" />
+                <br/><br/><br/><br/><br/>
+                <p class="iayos-center">
+                  <b><span class="cardFrontText" id="frontText">[front word goes here]</span></b>
+                </p>
+              </div>
+            </div>
+            <div class="back">
+
+              <div class="card-content">
+                <br/>
+                <img id="backflag" class="flag" src="" />
+                <br/>
+                <p class="iayos-center">
+                  <div class="call_button"><a id="answer1" href="#" onclick="mySS.ChooseAnswer(this); return false;" class="external">answer1</a></div>
+                </p>
+                <p class="iayos-center">
+                  <div class="call_button"><a id="answer2" href="#" onclick="mySS.ChooseAnswer(this); return false;" class="external">answer2</a></div>
+                </p>
+                <p class="iayos-center">
+                  <div class="call_button"><a id="answer3" href="#" onclick="mySS.ChooseAnswer(this); return false;" class="external">answer3</a></div>
+                </p>
+                <br/><br/>
+              </div>
+            </div>
+          </div>
+          <br />
+          <p>
+            <div id="flipItDiv" class="call_button"><a href="#" onclick="mySS.FlipFlashcardToBack(); return false;" class="external">flip it!</a></div>
+          </p>
+          <!-- put an advert in here? -->
+          <!-- <input id="toggle-flashcard" type="button" value="FLIP"> -->
+          <!--<button id="btn-read" class="button" value="READ TO ME">READ TO ME</button>-->
+
+        </div>
+        <!--end of page single-->
+
+      </div>
+
+
+    </div>
+  </div>
+</div>

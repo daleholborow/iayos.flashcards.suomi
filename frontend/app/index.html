@@ -1,144 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-	<meta charset="utf-8" />
-	<title>Simple Suomi Flashcards</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="styles/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" />
-	<link rel="stylesheet" href="styles/iayos.suomi.css" />
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+  <!-- <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-1418622246434149",
+        enable_page_level_ads: true
+      });
+    </script> -->
+  <script>
+    (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-105849037-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+  <link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+    href="apple-touch-startup-image-640x1096.png">
+  <title>Simple Suomi</title>
+  <link rel="stylesheet" href="css/framework7.css">
+  <link rel="stylesheet" href="css/framework7-icons.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/colors/blue.css">
+  <link type="text/css" rel="stylesheet" href="css/swipebox.css" />
+  <link type="text/css" rel="stylesheet" href="css/simplesuomi.css" />
+  <!-- for the Framework7 animations -->
+  <link type="text/css" rel="stylesheet" href="css/animations.css" />
+  <!-- For the flashcard https://github.com/daneden/animate.css -->
+  <link rel="stylesheet" href="css/animate.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,700,900' rel='stylesheet' type='text/css'>
 </head>
 
-<body>
+<body id="mobile_wrap">
 
-	<div data-role="page" id="page-home">
-		<div data-role="header" data-position="fixed">
-			<h3>Simple Suomi</h3>
-			<!--<a href="#add-form" data-transition="flip" data-icon="gear" data-iconpos="notext">Add</a>-->
-			<!--<a href="#page-scoreboard" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>-->
-		</div>
-		<div role="main" class="ui-content">
-			<h5 class="ui-bar ui-bar-a">Welcome to Simple Suomi Flashcards!</h5>
-			<p>
-				Dive into a deck and get learning Finnish for free now!
-			</p>
-			<h4 class="ui-bar ui-bar-a">Most Popular</h4>
-			<ul data-role="listview" data-inset="true">
-				<li><a class="select-deck" data-deck-code="deck_top_100_verbs">Top 100 Verbs</a></li>
-				<li><a class="select-deck" data-deck-code="deck_top_100_words">Top 100 Words</a></li>
-				<!--<li><a class="select-deck" >Top 50 Verbs</a></li>
-				<li><a class="select-deck" >Opposites Attract</a></li>-->
-			</ul>
-			<!--<p>Or </p>
-			<a href="#page-search-decks">search all decks </a>-->
-			<!--<div data-demo-html="#panel-fixed-page1"></div>-->
-		</div>
-		<div data-role="footer" data-position="fixed">
-			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
-		</div>
-	</div>
+  <div class="statusbar-overlay"></div>
 
-	<!--
-	<div data-role="page" id="page-contact">
-		<div data-role="header" data-position="fixed">
-			<h1>Contact Simple Suomi</h1>
-			- contact form to submit feedback
-		</div>
-		<div role="main" class="ui-content">...</div>
-		<div data-role="footer" data-position="fixed">
-			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
-		</div>
-	</div>-->
+  <div class="panel-overlay"></div>
 
+  <div class="views">
 
-	<div data-role="page" id="page-deck">
-		<div data-role="header" data-position="fixed">
-			<h3 id="page-deck-header">[deck name]]</h3>
-			<!--
-			<a href="#nav-panel" data-transition="flip" data-icon="bars" data-iconpos="notext">Menu</a>-->
-			<a href="#page-home" data-transition="flip" data-icon="home" data-iconpos="notext">Home</a>
-			<a href="#page-scoreboard" data-transition="flip" data-icon="edit" data-iconpos="notext">Scoreboard</a>
-		</div>
-		<div role="main" class="ui-content">
-			<div class="ui-body ui-body-a ui-corner-all ">
-				<div id="card" class="flip">
-					<div class="front absolute-center">
-						<div class="card-content">
-							<br />
-							<br />
-							<br />
-							<b><span id="frontText">[front word goes here]</span></b>
-							<hr />
-							<br />
-							<br />
-							<br />
-						</div>
-					</div>
-					<div class="back absolute-center">
-						<div class="card-content">
-							<p class="iayos-center">
-								<b><span id="backText">[front word goes here]</span></b>
-							</p>
-							<hr/>
-							<p class="iayos-center">
-								<button id="answer1" class="answer-button" value=""></button>
-							</p>
-							<p class="iayos-center">
-								<button id="answer2" class="answer-button" value=""></button>
-							</p>
-							<p class="iayos-center">
-								<button id="answer3" class="answer-button" value=""></button>
-							</p>
-						</div>
-					</div>
-				</div>
-				<!-- put an advert in here? -->
-				<input id="toggle-flashcard" type="button" value="FLIP">
-				<!--<button id="btn-read" class="button" value="READ TO ME">READ TO ME</button>-->
-			</div>
-		</div>
-		<div data-role="footer" data-position="fixed">
-			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
-		</div>
-	</div>
+    <div class="view view-main">
 
-	<div data-role="page" id="page-scoreboard">
-		<div data-role="header" data-position="fixed">
-			<h3>Scoreboard</h3>
-			<a href="#page-home" data-transition="flip" data-icon="home" data-iconpos="notext">Home</a>
-			<a href="#page-deck" data-transition="flip" data-icon="back" data-iconpos="notext">Back to Deck</a>
-		</div>
-		<div role="main" class="ui-content">
-			<div class="ui-body ui-body-a ui-corner-all ">
-				<h4 id="hd-scoreboard-deckname" class="ui-bar ui-bar-a">[Deckname]</h4>
-				<p>
-					View your score for each card in the deck. To learn a card again, reset the score - it will appear more often!
-				</p>
-				<table class="ui-table" id="table-scoreboard" border="0">
-					<thead>
-						<tr>
-							<th data-priority="1">Card</th>
-							<th data-priority="2" rowspan="2" class="center" style="width: 10%">Accuracy</th>
-							<th data-priority="3" rowspan="2" class="center" style="width: 10%">Reset</th>
-						</tr>
-					</thead>
-					<tbody id="tbody-cardscores">
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div data-role="footer" data-position="fixed">
-			<h4><a href="http://inayearorso.io" target="new">in a year or so</a></h4>
-		</div>
-	</div>
+      <div class="pages  toolbar-through">
 
+        <div data-page="index" class="page homepage">
+          <div class="page-content">
+            <div class="logo"><a href="deckcategories.html"><img id="homepagelogo" src="images/logo.png" alt="Simple Suomi logo" title="Simple Suomi" /></a></div>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom Toolbar-->
+      <div class="toolbar">
+        <div class="toolbar-inner">
+          <ul class="toolbar_icons">
 
+            <li><a href="deckcategories.html"><i class="f7-icons size-100 color-white">photos</i></a></li>
+            <li><a href="about.html"><i class="f7-icons size-100 color-white">info</i></a></li>
 
-	<script src="js/jquery-2.1.4/jquery-2.1.4.min.js"></script>
-	<script src="js/jquery.flip/jquery.flip.min.js"></script>
-	<script src="js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
-	<script src="dist/model.js"></script>
-	<script src="dist/script.js"></script>
+            <li class="menuicon"><a href="menu.html"><i class="f7-icons size-100 color-white">menu</i></a></li>
+
+            <li><a href="contact.html"><i class="f7-icons size-100 color-white">email</i></a></li>
+            <!-- <li><a href="clearcache.html"><i class="f7-icons size-100 color-white">delete_round</i></a></li> -->
+            <li><a href="#" data-popup=".popup-social" class="open-popup"><i class="f7-icons size-100 color-white">persons</i><span>Social</span></a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social Popup -->
+  <div class="popup popup-social">
+    <div class="content-block">
+      <h4>Follow Us</h4>
+      <p>You can find out more about Simple Suomi, the author and any upcoming features at the following locations</p>
+      <ul class="social_share">
+        <!-- <li><a href="#"><img src="images/icons/white/linkedin.png" alt="" title="" /></a></li> -->
+        <li><a class="external" href="http://inayearorso.io" target="new"><i class="f7-icons size-50 color-white">compose</i><br/><br/><span class="color-white">in a year or so</span></a>
+          <li><a class="external" href="https://www.linkedin.com/in/dale-holborow/" target="new"><i class="f7-icons size-50 color-white">social_linkedin</i><br/><br/><span class="color-white">linkedin</span></a>
+            <li><a class="external" href="https://github.com/daleholborow/iayos.flashcards.suomi" target="new"><i class="f7-icons size-50 color-white">social_github_fill</i><br/><br/><span class="color-white">github</span></a></li>
+      </ul>
+      <div class="close_popup_button"><a href="#" class="close-popup"><img src="images/icons/white/menu_close.png" alt="" title="" /></a></div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="js/jquery/jquery-1.11.1.min.js"></script>
+  <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+  <script src="js/jquery.flip.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="js/framework7.js"></script>
+  <script type="text/javascript" src="js/classie.js"></script>
+
+  <script type="text/javascript" src="js/jquery.swipebox.js"></script>
+  <script type="text/javascript" src="dist/servicestack-client.js"></script>
+  <script type="text/javascript" src="dist/my-app.js"></script>
+  <script type="text/javascript" src="dist/flashcardapi.dtos.js"></script>
+  <script type="text/javascript" src="dist/simplesuomi.js"></script>
 </body>
 
 </html>

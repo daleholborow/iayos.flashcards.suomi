@@ -1,0 +1,57 @@
+#========================================================================
+# build and deployment of TESTING configuration
+#========================================================================
+-
+  os: Visual Studio 2015
+  
+  init:
+    - git config --global core.autocrlf true
+  
+  environment:
+    Environment: Debug
+
+  # Install scripts. (runs after repo cloning)
+  install:
+    - git remote set-url origin https://github.com/daleholborow/iayos.flashcards.suomi.git
+    # Get the latest stable version of Node.js or io.js
+    - ps: Install-Product node ''
+    - set PATH=%APPDATA%\npm;%PATH%;
+    # Install global modules
+    - cd frontend    
+    - npm install -g gulp typings --skip-installed
+    - npm install --skip-installed
+    - cd ..  
+ 
+  branches:
+    only:
+      - develop
+      - master
+      - /feature.*/   # You can use Regex expression to match multiple branch name(s)
+
+  configuration: Debug
+  
+  # Retain NuGet, Bower & NPM package caches between builds.  
+  cache:
+    #- '%LocalAppData%\bower\cache\packages'		# Preserve Bower packages (note LOCAL not ROAMING location)
+    - '%APPDATA%\npm-cache'
+    - frontend\node_modules -> C:\projects\iayos-flashcards-suomi\frontend\package.json
+    - frontend\typings -> C:\projects\iayos-flashcards-suomi\frontend\typings.json
+
+
+  # We are NOT building a VS solution, so try to switch to build_script mode
+  build_script:
+    # Run Gulp build on frontend site.
+    - cd frontend
+    - typings install
+    - gulp build
+    - cd ..
+    
+  artifacts:
+    - path: frontend\app\
+      name: final-app-ui
+
+  deploy:
+    -
+      provider: Environment
+      name: iayos.flashcards.suomi
+
