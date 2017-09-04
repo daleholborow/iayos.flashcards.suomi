@@ -291,7 +291,7 @@ var mySS = (function () {
         // always set card to unflipped initially
         FlipFlashcardToFront();
 
-        // sometimes show the front, sometimes show the back
+        // sometimes show the front text, sometimes show the back
         let isInFrontMode: boolean = Math.random() >= 0.5;
         //console.log("isInFrontMode:" + isInFrontMode);
 
@@ -309,6 +309,9 @@ var mySS = (function () {
         datastore.activeCardId = currentCard.cardId;
         $("#frontText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
         $("#backText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
+        let imgFolder = "/images/flags/";
+        $("#frontflag").attr('src', imgFolder + GetFlagImageByMode(isInFrontMode, deck));
+        $("#backflag").attr('src', imgFolder + GetFlagImageByMode(!isInFrontMode, deck));
     }
 
 
@@ -381,6 +384,13 @@ var mySS = (function () {
         return card.backText;
     }
 
+    function GetFlagImageByMode(useFrontLanguage : boolean, deck : dtos.DeckDto) : string {
+        let language = (useFrontLanguage) ? deck.frontLanguage : deck.backLanguage;
+        // console.log("the language is", language);
+        if (language.toLowerCase() === "finnish") return "fi.png";
+        if (language.toLowerCase() === "english") return "gb.png";
+        return "gb.gif";
+    }
 
 	/*
 		
