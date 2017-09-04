@@ -80,6 +80,7 @@ function ajaxContact(theForm) {
 		url: $(theForm).attr("action"),
 		data: formData,
 		success: function (response) {
+			response = 'success';	// our email page doesnt send back data, but we are in the success state so just set value to what the template code expects
 			if (note.height()) {
 				note.fadeIn('fast', function () { $(this).hide(); });
 			} else {
@@ -87,9 +88,7 @@ function ajaxContact(theForm) {
 			}
 			$('#LoadingGraphic').fadeOut('fast', function () {
 				if (response === 'success') {
-
 					$('.page_subtitle').hide();
-
 				}
 				// Message Sent? Show the 'Thank You' message and hide the form
 				var result = '';
