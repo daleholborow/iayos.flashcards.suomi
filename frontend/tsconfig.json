@@ -1,31 +1,4 @@
-// {
-//   "compileOnSave": false,
-//   "compilerOptions": {
-//     "rootDir": "sxxxrc",
-//     "outDir": "app/distXX",
-//     "sourceMap": false,
-//     //"target": "es5",
-//     //"module": "amd",
-//     "declaration": false,
-//     "noImplicitAny": false,
-//     "removeComments": true,
-//     "emitDecoratorMetadata": true,
-//     "experimentalDecorators": true,
-//     "moduleResolution": "node",
-//     "lib": ["es2015", "dom"],
-//     "baseUrl": "./",
-//     "paths": {
-//       "src/*": ["src/*"]
-//     }
-//   },
-//   "exclude": [
-//     "dist",
-//     "node_modules"
-//   ]
-// }
-
 // Notes: compilerOptions.allowJs MUST be set to true too allow .d.ts file intellisense
-
 {
     "compileOnSave": false,
     "compilerOptions": {

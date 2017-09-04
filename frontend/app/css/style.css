@@ -673,13 +673,18 @@ padding:0px;
 list-style:none;
 margin:0 0 1px 0;
 }
+.table_section_accuracy{ 
+	width:20%; 
+	float:left;
+	padding:0 0 0 2%;
+	}
 .table_section_small{
-width:14%; 
+width:16%; 
 float:left; 
 padding:0 0 0 2%;
 }
 .table_section{ 
-width:40%; 
+width:57%; 
 float:left;
 padding:0 0 0 2%;
 }

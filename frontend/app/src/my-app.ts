@@ -150,7 +150,7 @@ function ajaxContact(theForm) {
 		note = $('#Note');
 	$.ajax({
 		type: "POST",
-		url: "send.php",
+		url: $(theForm).attr("action"),
 		data: formData,
 		success: function (response) {
 			if (note.height()) {
