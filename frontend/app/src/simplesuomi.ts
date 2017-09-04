@@ -310,8 +310,8 @@ var mySS = (function () {
         $("#frontText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
         $("#backText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
         let imgFolder = "/images/flags/";
-        $("#frontflag").attr('src', imgFolder + GetFlagImageByMode(isInFrontMode, deck));
-        $("#backflag").attr('src', imgFolder + GetFlagImageByMode(!isInFrontMode, deck));
+        $("#frontflag").attr('src', imgFolder + GetFlagImageByMode(!isInFrontMode, deck));
+        $("#backflag").attr('src', imgFolder + GetFlagImageByMode(isInFrontMode, deck));
     }
 
 
