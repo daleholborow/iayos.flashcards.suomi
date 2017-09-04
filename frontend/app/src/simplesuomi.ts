@@ -409,6 +409,7 @@ var mySS = (function () {
     const QueryDeckCategories = async (applicationId: string) => {
         let request = new dtos.ListDeckCategoriesByApplicationRequest();
         request.applicationId = applicationId;
+        request.includeDecks = true;
         try {
             const response = await client.get(request)
             return response;
