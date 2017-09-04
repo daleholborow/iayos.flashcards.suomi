@@ -9,6 +9,14 @@
         enable_page_level_ads: true
       });
     </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-105849037-1', 'auto');
+      ga('send', 'pageview');
+    </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -44,7 +52,7 @@
 
         <div data-page="index" class="page homepage">
           <div class="page-content">
-            <div class="logo"><img id="homepagelogo" src="images/logo.png" alt="Simple Suomi logo" title="Simple Suomi" /></div>
+            <div class="logo"><a href="deckcategories.html"><img id="homepagelogo" src="images/logo.png" alt="Simple Suomi logo" title="Simple Suomi" /></a></div>
           </div>
         </div>
       </div>
@@ -59,7 +67,8 @@
             <li class="menuicon"><a href="menu.html"><i class="f7-icons size-100 color-white">menu</i></a></li>
 
             <li><a href="contact.html"><i class="f7-icons size-100 color-white">email</i></a></li>
-            <li><a href="clearcache.html"><i class="f7-icons size-100 color-white">delete_round</i></a></li>
+            <!-- <li><a href="clearcache.html"><i class="f7-icons size-100 color-white">delete_round</i></a></li> -->
+            <li><a href="#" data-popup=".popup-social" class="open-popup"><i class="f7-icons size-100 color-white">persons</i><span>Social</span></a></li>
             
           </ul>
         </div>

@@ -1,5 +1,4 @@
 /// <reference path='./my-app.ts' />
-/// <reference path='./model.ts' />
 /// <reference path='./flashcardapi.dtos.ts' />
 /// <reference path='./servicestack-client.ts' />
 /// <reference path="../../typings/index.d.ts" />
@@ -132,7 +131,7 @@ var mySS = (function () {
             <div class="accordion-item-toggle">
                 <i class="icon icon-plus">+</i>
                 <i class="icon icon-minus">-</i>
-                <span>${dto.name}</span>
+                <span><b>${dto.name}</b></span>
             </div>
             <div class="accordion-item-content">
                 <div class="list-block">
@@ -148,30 +147,32 @@ var mySS = (function () {
 
     const BuildDeckScoreboardTemplate = (deckDto : dtos.DeckDto) : string => {
         // console.log("building the scoreboard page template");
+        //<div class="table_section_small">Reset</div>
         let html : string = `
             <ul class="responsive_table" id="scoreslist">
                 <li class="table_row">
-                <div class="table_section">Card</div>
+                <div class="table_section_card">Card</div>
                 <div class="table_section_accuracy">Accuracy</div>
-                <div class="table_section_small">Reset</div>
+                
                 </li>
             `;
+        deckDto.cards.sort((a, b) => {return a.frontText > b.frontText ? 1 : 0});
         for (let card of deckDto.cards) {
             // console.log(card, datastore.cardScores);
             let score = datastore.getOrInitializeCardscore(card.cardId);
             html += `
             <li class="table_row">
-                <div class="table_section">
+                <div class="table_section_card">
                     ${card.frontText}
                     <br/> 
                     ${card.backText}
                 </div>
                 <div class="table_section_accuracy">${score.r} / ${score.r+score.w}<br/>(${CalculateAccuracy(score.r,score.w)}%)</div>
-                <div class="table_section_small">
-                    <button>reset</button>
-                </div>
             </li>
             `;
+        //     <div class="table_section_small">
+        //     <button>reset</button>
+        // </div>
         }
         html = html + `</ul>`;
         return html;
