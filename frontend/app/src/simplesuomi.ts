@@ -243,10 +243,26 @@ var mySS = (function () {
 
 
     //myApp.onPageInit('deckcategories', function (page) {
-    myApp.onPageBeforeAnimation('deckcategories', function (page) {
+    myApp.onPageBeforeInit('deckcategories', function (page) {
         // console.log('going to view deck categories' + Date.now());
         BuildDeckCategoriesPageListing();
     });
+
+    // myApp.onPageAfterAnimation('deckcategories', function(page) {
+    //     console.log("in onpageafternaimation");
+    // });
+    // myApp.onPageBeforeAnimation('deckcategories', function(page) {
+    //     console.log("in onpagbeforeanim");
+    // });
+    // myApp.onPageBeforeInit('deckcategories', function(page) {
+    //     console.log("in onpagebeforeinit");
+    // });
+    // myApp.onPageInit('deckcategories', function(page) {
+    //     console.log("in onpageinit");
+    // });
+    // myApp.onPageReinit('deckcategories', function(page) {
+    //     console.log("in onpagereinit");
+    // });
 
 
     myApp.onPageInit('flashcards', function (page) {
