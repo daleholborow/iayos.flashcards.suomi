@@ -208,7 +208,8 @@ var mySS = (function () {
     function BuildDeckCategoriesPageListing(): void {
         // console.log("Get deck categories for application and go deck categories page");
         QueryDeckCategories(applicationId).then(response => {
-            $("#deckCategoryList").html(response.results.map(DeckCategoryAccordionTemplate).join(''));
+            let content = response.results.map(DeckCategoryAccordionTemplate).join('');
+            $("#deckCategoryList").html(content);
         });
     }
 
@@ -425,7 +426,7 @@ var mySS = (function () {
     const QueryDeckCategories = async (applicationId: string) => {
         let request = new dtos.ListDeckCategoriesByApplicationRequest();
         request.applicationId = applicationId;
-        request.includeDecks = true;
+        request.includeDecks = true; 
         try {
             const response = await client.get(request)
             return response;
