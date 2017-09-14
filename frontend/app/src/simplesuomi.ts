@@ -32,17 +32,35 @@ class DummyDatastore implements IDatastore {
 */
 class Datastore implements IDatastore {
 
-    static storeKey: string = "ssLocalStore";
+    static deckStoreKey: string = "ssDeckStore";
+    static scoreStoreKey: string = "ssScoreStore";
 
     get activeCardId(): string { return this.initData.activeCardId; }
-    set activeCardId(activeCardId: string) { this.initData.activeCardId = activeCardId; this.saveToLocalStorage(); }
+    set activeCardId(activeCardId: string) { this.initData.activeCardId = activeCardId; }
     get cardScores(): Map<string, CardScore> { return this.initData.cardScores; }
+    //set cardScores(scores : Map<string, CardScore>) { this.initData.cardScores = scores;}
     get activeDeck() : dtos.DeckDto { return this.initData.activeDeck; };
-    set activeDeck(deck : dtos.DeckDto) { this.initData.activeDeck = deck; this.saveToLocalStorage(); }
+    set activeDeck(deck : dtos.DeckDto) { this.initData.activeDeck = deck; }
+
 
     constructor(private initData: IDatastore) {
     }
 
+
+    setAndSaveActiveCardId(cardId : string) : void {
+        this.initData.activeCardId = cardId;
+        this.saveToLocalStorage();
+    }
+
+    setAndSaveActiveDeck(deck : dtos.DeckDto) : void {
+        this.initData.activeDeck = deck;
+        this.saveToLocalStorage();
+    }
+
+    setAndSaveCardScores(scores : Map<string, CardScore>) : void {
+        this.initData.cardScores = scores;
+        this.saveToLocalStorage();
+    }
 
     recordCorrectAnswer(cardId: string): void {
         let cardscore = this.getOrInitializeCardscore(cardId);
@@ -57,7 +75,7 @@ class Datastore implements IDatastore {
     }
 
     getOrInitializeCardscore(cardId: string): CardScore {
-        // console.log("the scores are currently", this.initData.cardScores);
+        //  console.log("the scores are currently", this.initData.cardScores);
         let hasCardScore = this.initData.cardScores.has(cardId);
         if (!hasCardScore) {
             this.initData.cardScores.set(cardId, new CardScore(cardId));
@@ -76,12 +94,18 @@ class Datastore implements IDatastore {
     
     static getStore(): Datastore {
         let localStore: Datastore;
-        let currentLocalStorage = localStorage.getItem(Datastore.storeKey);
+        let currentLocalStorage = localStorage.getItem(Datastore.deckStoreKey);
         // console.log("so local data is set to", currentLocalStorage);
         if (currentLocalStorage) {
-            // console.log("and the json parsed obj is", JSON.parse(localStorage.getItem(this.storeKey)));
+            //  console.log("and the json parsed obj is", JSON.parse(localStorage.getItem(this.deckStoreKey)));
             //localStore = new Datastore(JSON.parse(currentLocalStorage));
             localStore = $.extend(new Datastore(new DummyDatastore()), JSON.parse(currentLocalStorage));
+            //console.log("stuf", localStorage.getItem(Datastore.scoreStoreKey));
+            localStore.initData.cardScores = new Map<string, CardScore>();
+            let currentScoreString = localStorage.getItem(Datastore.scoreStoreKey);
+            if (currentScoreString != "{}") {
+                localStore.initData.cardScores = new Map<string, CardScore>(JSON.parse(currentScoreString));
+            }
             // console.log("loaded store from localstorage", localStore);
         }
         else {
@@ -95,7 +119,9 @@ class Datastore implements IDatastore {
 
 
     saveToLocalStorage(): void {
-        localStorage.setItem(Datastore.storeKey, JSON.stringify(this.initData));
+        localStorage.setItem(Datastore.deckStoreKey, JSON.stringify(this.initData));
+        // console.log("about to save scores", this.initData.cardScores);
+        localStorage.setItem(Datastore.scoreStoreKey, JSON.stringify(Array.from(this.initData.cardScores.entries())));
     }
 
 }
@@ -199,7 +225,7 @@ var mySS = (function () {
     const LoadDeckAndCache = async (deckId: string) => {
         return QueryDeckWithCards(deckId).then(response => {
             // console.log(response.result);
-            datastore.activeDeck = response.result;
+            datastore.setAndSaveActiveDeck(response.result);
             // console.log("now decks are:", datastore.decks);
         });
     }
@@ -282,8 +308,9 @@ var mySS = (function () {
         FindFlipItDiv().show();
     });
 
-
+    
     myApp.onPageInit('scoreboard', function (page) {
+        // console.log("loading and adeck is", datastore.activeDeck);
         try {
             $("#ttlScoreboardDeck").html("Scoreboard:" + datastore.activeDeck.name);
             // console.log('going to view deck scoreboard' + Date.now());
@@ -323,7 +350,7 @@ var mySS = (function () {
             // console.log("currently selected cards are:", selectedCards);
         }
         let currentCard = selectedCards[Math.floor(Math.random() * selectedCards.length)];
-        datastore.activeCardId = currentCard.cardId;
+        datastore.setAndSaveActiveCardId(currentCard.cardId);
         $("#frontText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
         $("#backText").text(GetFaceTextByMode(!isInFrontMode, currentCard));
         let imgFolder = "/images/flags/";
@@ -426,7 +453,7 @@ var mySS = (function () {
     const QueryDeckCategories = async (applicationId: string) => {
         let request = new dtos.ListDeckCategoriesByApplicationRequest();
         request.applicationId = applicationId;
-        request.includeDecks = true; 
+        request.includeDecks = true;  
         try {
             const response = await client.get(request)
             return response;
