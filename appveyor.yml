@@ -26,7 +26,7 @@
     only:
       - develop
       - master
-      - /feature.*/   # You can use Regex expression to match multiple branch name(s)
+      #- /feature.*/   # You can use Regex expression to match multiple branch name(s)
 
   configuration: Debug
   
