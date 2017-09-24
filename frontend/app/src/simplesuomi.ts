@@ -98,7 +98,6 @@ class Datastore implements IDatastore {
         // console.log("so local data is set to", currentLocalStorage);
         if (currentLocalStorage) {
             //  console.log("and the json parsed obj is", JSON.parse(localStorage.getItem(this.deckStoreKey)));
-            //localStore = new Datastore(JSON.parse(currentLocalStorage));
             localStore = $.extend(new Datastore(new DummyDatastore()), JSON.parse(currentLocalStorage));
             //console.log("stuf", localStorage.getItem(Datastore.scoreStoreKey));
             localStore.initData.cardScores = new Map<string, CardScore>();
@@ -112,7 +111,6 @@ class Datastore implements IDatastore {
             // console.log("store doesnt exist already, create and save now");
             localStore = new Datastore(new DummyDatastore());
             localStore.saveToLocalStorage();
-            //localStore = Datastore.reset();
         }
         return localStore;
     }
@@ -138,8 +136,8 @@ var mySS = (function () {
         return `
             <li class="item-content">
                 <div class="item-inner">
-                    <div class="item-title" onclick="mySS.BuildAndGoToCardsPage('${dto.deckId}');return false;"><b>${dto.name}</b></div>
-                    <div class="item-after" onclick="mySS.BuildAndGoToCardsPage('${dto.deckId}');return false;">
+                    <div class="item-title" onclick="mySS.LoadDeckAndShowCardCountSelectionPage('${dto.deckId}');return false;"><b>${dto.name}</b></div>
+                    <div class="item-after" onclick="mySS.LoadDeckAndShowCardCountSelectionPage('${dto.deckId}');return false;">
                         <span class="badge">${dto.numberOfCards} cards</span>&nbsp;|&nbsp;
                         <span class="view-score" onclick="mySS.RerouteToScoreboardPage('${dto.deckId}');">score</span>
                     </div>
@@ -240,11 +238,28 @@ var mySS = (function () {
     }
 
 
-    function BuildAndGoToCardsPage(deckId: string): void {
-        // console.log("Get deck with cards and go to flashcard page");
+    function BuildAndGoToCardsPage(maxNumberOfCards: number): void {
+        let availableCards = datastore.activeDeck.cards.slice();
+        let selectedCards : dtos.CardDto[] = [];
+        while (selectedCards.length < maxNumberOfCards && availableCards.length > 0) {
+            let randomCard = availableCards[Math.floor(Math.random() * availableCards.length)];
+            selectedCards.push(randomCard);
+            var indexOfRandomCard = availableCards.indexOf(randomCard, 0);
+            // console.log("the index of the randomly selected card is", indexOfRandomCard);
+            availableCards.splice(indexOfRandomCard, 1);
+            // console.log("new count of available cards is", availableCards.length);
+        }
+        datastore.activeDeck.cards = selectedCards;
+        datastore.saveToLocalStorage();
+        mainView.router.load({ url: 'flashcards.html' });
+    }
+
+
+    function LoadDeckAndShowCardCountSelectionPage(deckId : string) : void {
+        // // console.log("Get deck with cards and go to flashcard page");
         LoadDeckAndCache(deckId).then(x => {
             //mainView.router.load({ url: 'scoreboard.html' });
-            mainView.router.load({ url: 'flashcards.html' });
+            mainView.router.load({ url: 'numberOfCards.html' });
         });
     }
 
@@ -308,6 +323,16 @@ var mySS = (function () {
         FindFlipItDiv().show();
     });
 
+
+    myApp.onPageBeforeAnimation('numberOfCards', function (page) {
+        // hacked in to be less than the two "lesser" options to force a card 
+        // refresh if some subset currently selected
+        if (datastore.activeDeck.cards.length < 26) {
+            LoadDeckAndCache(datastore.activeDeck.deckId).then(x => {
+                // cards were refreshed for the deck, user can select how many to study
+            });
+        }
+    });
     
     myApp.onPageInit('scoreboard', function (page) {
         // console.log("loading and adeck is", datastore.activeDeck);
@@ -506,6 +531,7 @@ var mySS = (function () {
         BuildAndGoToCardsPage: BuildAndGoToCardsPage,
         ChooseAnswer: ChooseAnswer,
         FlipFlashcardToBack: FlipFlashcardToBack,
+        LoadDeckAndShowCardCountSelectionPage : LoadDeckAndShowCardCountSelectionPage,
         RerouteToScoreboardPage: RerouteToScoreboardPage
     }
 
